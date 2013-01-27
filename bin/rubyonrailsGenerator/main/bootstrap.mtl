@@ -3,7 +3,7 @@
 
 [template public generateProject(model : Model)]
 [comment @main/]
-[comment Create a Rakefile taht generate the whole project /]
+[comment Create a Rakefile that generate the whole project /]
 [file ('scripts/' + model.name.toLowerCase() + '/Rakefile', false, 'UTF-8')]
 
 namespace :app do 
