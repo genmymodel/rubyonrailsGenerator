@@ -1,7 +1,56 @@
 [comment encoding = UTF-8 /]
 [module bootstrap('http://www.eclipse.org/uml2/4.0.0/UML')]
 
-
-[template public generateProject(aPackage : Package)]
+[template public generateProject(model : Model)]
 [comment @main/]
+[comment Create a Rakefile taht generate the whole project /]
+[file ('scripts/' + model.name.toLowerCase() + '/Rakefile', false, 'UTF-8')]
+
+namespace :app do 
+	
+	desc "Creating the rails project directory"
+	task :setup do 
+		APP_DIR = "[model.name.toLowerCase() /]".gsub(" ", "_")
+		directory APP_DIR
+		sh "rails new ."
+		sh "cd #{APP_DIR}"
+	end	
+	
+	desc "Generating migrations for models"
+	task :gen_models => :setup do 
+		[model.generateMigrationsForModel() /]
+	end
+	
+	task :default => :gen_models do 
+		sh 'rails db:migrate'
+	end	
+
+end
+
+[/file]
+[/template]
+
+
+[comment Create the command line for every Class within the model /]
+
+[template private generateMigrationsForModel (model : Model) ]
+[for (c : Class | model.getOwnedTypes()->filter("Class"))]
+[c.generateCommandForClass() /]
+[/for]
+[/template]
+
+
+[comment Create the command line for a given class
+		 ex: rails g scaffold User firstname:string lastname:string /]
+
+[template private generateCommandForClass (c : Class) ]
+sh "rails g scaffold [c.name /] [generateCommandParamsFroClass(c) /]
+[/template]
+
+
+[comment Create the command line options for a given class
+		 ex: firstname:string lastname:string /]
+
+[template private generateCommandParamsFroClass(c : Class)]
+[for (attr : Property | c.getAllAttributes()) separator (' ')] [attr.name/]:[attr.type.name/]) [/for]
 [/template]
