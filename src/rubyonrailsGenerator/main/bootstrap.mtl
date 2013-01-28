@@ -34,7 +34,7 @@ end
 [comment Create the command line for every Class within the model /]
 
 [template private generateMigrationsForModel (model : Model) ]
-[for (c : Class | model.getOwnedTypes()->filter("Class"))]
+[for (c : Class | model.packagedElement->filter("Class"))]
 [c.generateCommandForClass() /]
 [/for]
 [/template]
@@ -44,7 +44,7 @@ end
 		 ex: rails g scaffold User firstname:string lastname:string /]
 
 [template private generateCommandForClass (c : Class) ]
-sh "rails g scaffold [c.name /] [generateCommandParamsFroClass(c) /]
+sh "rails g scaffold [c.name.toUpperFirst() /] [generateCommandParamsFroClass(c) /]
 [/template]
 
 
@@ -52,5 +52,5 @@ sh "rails g scaffold [c.name /] [generateCommandParamsFroClass(c) /]
 		 ex: firstname:string lastname:string /]
 
 [template private generateCommandParamsFroClass(c : Class)]
-[for (attr : Property | c.getAllAttributes()) separator (' ')] [attr.name/]:[attr.type.name/]) [/for]
+[for (attr : Property | c.ownedAttribute) separator (' ')] [attr.name.toLowerCase()/]:[attr.type.name.toLowerCase() /][/for]
 [/template]
