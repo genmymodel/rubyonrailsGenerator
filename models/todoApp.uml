@@ -24,6 +24,5 @@
     <ownedAttribute xmi:id="_TvVYQGlTEeKjLJP8_AilAw" name="isCompleted">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
     </ownedAttribute>
-    <ownedAttribute xmi:id="_kBgmQGlTEeKjLJP8_AilAw" name="owner" type="_93gl0GlREeKjLJP8_AilAw"/>
   </packagedElement>
 </uml:Model>

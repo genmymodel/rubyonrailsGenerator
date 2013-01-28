@@ -11,9 +11,9 @@ namespace :app do
 	desc "Creating the rails project directory"
 	task :setup do 
 		APP_DIR = "[model.name.toLowerCase() /]".gsub(" ", "_")
-		directory APP_DIR
-		sh "rails new ."
+		Dir.mkdir(APP_DIR, 0755) unless Dir.exist?(APP_DIR)
 		sh "cd #{APP_DIR}"
+		sh "rails new ."
 	end	
 	
 	desc "Generating migrations for models"
@@ -21,12 +21,13 @@ namespace :app do
 		[model.generateMigrationsForModel() /]
 	end
 	
-	task :default => :gen_models do 
-		sh 'rails db:migrate'
+	task :gen_migrations => :gen_models do 
+		sh "rake db:migrate"
 	end	
 
 end
 
+task :default => "app:gen_migrations"
 [/file]
 [/template]
 
@@ -44,7 +45,7 @@ end
 		 ex: rails g scaffold User firstname:string lastname:string /]
 
 [template private generateCommandForClass (c : Class) ]
-sh "rails g scaffold [c.name.toUpperFirst() /] [generateCommandParamsFroClass(c) /]
+sh "rails g scaffold [c.name.toUpperFirst() /] [generateCommandParamsFroClass(c) /]"
 [/template]
 
 
@@ -52,5 +53,5 @@ sh "rails g scaffold [c.name.toUpperFirst() /] [generateCommandParamsFroClass(c)
 		 ex: firstname:string lastname:string /]
 
 [template private generateCommandParamsFroClass(c : Class)]
-[for (attr : Property | c.ownedAttribute) separator (' ')] [attr.name.toLowerCase()/]:[attr.type.name.toLowerCase() /][/for]
+[for (attr : Property | c.attribute) separator (' ')] [attr.name.toLowerCase()/]:[attr.type.name.toLowerCase() /][/for]
 [/template]
