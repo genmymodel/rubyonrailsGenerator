@@ -1,2 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_a8zb4GigEeK5o-_pO4LDtw"/>
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_a8zb4GigEeK5o-_pO4LDtw" name="todoApp">
+  <packagedElement xmi:type="uml:Class" xmi:id="_93gl0GlREeKjLJP8_AilAw" name="User">
+    <ownedAttribute xmi:id="_CfL7kGlSEeKjLJP8_AilAw" name="firstname">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_igacYGlSEeKjLJP8_AilAw" name="lastname">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_kVDp0GlSEeKjLJP8_AilAw" name="Task">
+    <ownedAttribute xmi:id="_n1nmgGlSEeKjLJP8_AilAw" name="title">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_GRONUGlTEeKjLJP8_AilAw" name="priority">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_LV8rcGlTEeKjLJP8_AilAw" name="created_at">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_METAMODELS/Ecore.metamodel.uml#EDate"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_R1-C4GlTEeKjLJP8_AilAw" name="updated_at">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_METAMODELS/Ecore.metamodel.uml#EDate"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_TvVYQGlTEeKjLJP8_AilAw" name="isCompleted">
+      <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_kBgmQGlTEeKjLJP8_AilAw" name="owner" type="_93gl0GlREeKjLJP8_AilAw"/>
+  </packagedElement>
+</uml:Model>
