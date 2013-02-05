@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/4.0.0/UML" xmi:id="_a8zb4GigEeK5o-_pO4LDtw" name="todoApp">
+<uml:Model xmi:version="20110701" xmlns:xmi="http://www.omg.org/spec/XMI/20110701" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_a8zb4GigEeK5o-_pO4LDtw" name="todoApp">
   <packagedElement xmi:type="uml:Class" xmi:id="_93gl0GlREeKjLJP8_AilAw" name="User">
     <ownedAttribute xmi:id="_CfL7kGlSEeKjLJP8_AilAw" name="firstname">
       <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#String"/>

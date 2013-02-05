@@ -1,16 +1,16 @@
 [comment encoding = UTF-8 /]
-[module bootstrap('http://www.eclipse.org/uml2/4.0.0/UML')]
+[module bootstrap('http://www.eclipse.org/uml2/3.0.0/UML')]
 
 [template public generateProject(model : Model)]
 [comment @main/]
 [comment Create a Rakefile that generate the whole project /]
-[file ('scripts/' + model.name.toLowerCase() + '/Rakefile', false, 'UTF-8')]
+[file ('scripts/' + model.name.toLower() + '/Rakefile', false, 'UTF-8')]
 
 namespace :app do 
 	
 	desc "Creating the rails project directory"
 	task :setup do 
-		APP_DIR = "[model.name.toLowerCase() /]".gsub(" ", "_")
+		APP_DIR = "[model.name.toLower() /]".gsub(" ", "_")
 		Dir.mkdir(APP_DIR, 0755) unless Dir.exist?(APP_DIR)
 		sh "cd #{APP_DIR}"
 		sh "rails new ."
@@ -53,5 +53,5 @@ sh "rails g scaffold [c.name.toUpperFirst() /] [generateCommandParamsFroClass(c)
 		 ex: firstname:string lastname:string /]
 
 [template private generateCommandParamsFroClass(c : Class)]
-[for (attr : Property | c.attribute) separator (' ')] [attr.name.toLowerCase()/]:[attr.type.name.toLowerCase() /][/for]
+[for (attr : Property | c.attribute) separator (' ')] [attr.name.toLower()/]:[attr.type.name.toLower() /][/for]
 [/template]
