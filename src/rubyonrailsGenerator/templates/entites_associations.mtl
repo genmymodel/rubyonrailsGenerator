@@ -27,8 +27,19 @@
 
 [template public generateRModel(klass : Class)]
 	[file (getModelFilename(klass) , false, 'UTF-8')]
-class [klass.classify() /]  < ActiveRecord::Base
-  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (isClass()) ]:[attr.name.toLower()/][/for]
+class [klass.classify() /]  < [klass.superKlass() /]
+
+  # Attributes
+  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (not isClass()) ]:[attr.name.underscore()/][/for]
+
+  # Associations
+  [for (p : Property | klass.attribute) ? (isClass()) ]
+  ++[p.association.ownedEnd.toString() /]	
+
+  --[p.association.navigableOwnedEnd.toString() /]
+  [/for]
+  
+
 end
 	[/file]
 [/template]
@@ -42,6 +53,15 @@ class [enum.classify() /]
 end
 	[/file]
 [/template]
+
+[template public superKlass(klass : Class)]
+	[if (klass.general.name->isEmpty())]
+ActiveRecord::Base
+	[else]
+[klass.general.name /]				
+	[/if]
+[/template] 
+
 
 
 [** 
@@ -57,30 +77,43 @@ end
 [query public isEnum(pe : PackageableElement) : Boolean 
 		= pe.oclIsTypeOf(Enumeration) /]
 
+
 [**
  * Return all attributes of the class except association member
  * @param klass	
  */]
 [query public isClass(p : Property) : Boolean
-		= p.association.name.oclIsUndefined() /]
+		= not p.association.name.oclIsUndefined() /]
 
 [**
  * Return the ruby class name from Rails naming conventions
  * @param pe	UML Class or Enumerable
  */]
 [query public classify(pe : PackageableElement) :  String
-	= pe.name	
-			.trim()
-			.toUpperFirst() /]
+		= pe.name	
+				.trim()
+				.toUpperFirst() /]
+
+[**
+ * Format the string given as parameter to fit naming conventions
+ * @param str	
+ */]
+[query public underscore(str : String) :  String
+		= str.toLowerFirst()
+			 .replaceAll('([A-Z])', '_$1')
+			 .toLower() /]
 
 [**
  * Return the right ruby filename for the class including the root path
  * @param pe	UML Class or Enumerable
  */]
 [query public getModelFilename(pe : PackageableElement) :  String
-	= 'app/models/' + 
+		= 'app/models/' + 
 			pe.name
-				.toLowerFirst()
-				.replaceAll('([A-Z])', '_$1')
-				.toLower()
+				.underscore()
 				.concat('.rb')	/]
+
+
+[query public oppositeAttributeOf(p : Property) : Property 
+	=  p.association.memberEnd->select(name <> p.name)/]
+
