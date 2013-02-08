@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" name="TaskManger">
+  <packageImport>
+    <importedPackage href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#/"/>
+  </packageImport>
+  
+  <packagedElement xsi:type="uml:Class" name="Task">
+    <ownedAttribute name="title">
+      <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute name="priority" type="//Priority">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute name="isCompleted">
+      <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" value="1"/>
+    </ownedAttribute>
+    <ownedOperation name="getUncompletedTasks">
+      <ownedComment body="Return all uncompleted task "/>
+      <ownedParameter direction="return"/>
+    </ownedOperation>
+    <ownedOperation name="getCompletedTasks">
+      <ownedComment body="Return all completed task "/>
+      <ownedParameter direction="return"/>
+    </ownedOperation>
+    <ownedOperation name="finish">
+      <ownedComment body="Set the state of a Task to completed&#xA;"/>
+      <ownedParameter direction="return"/>
+    </ownedOperation>
+    <ownedOperation name="isPrior">
+      <ownedComment body="Return whether or not a task is prior to the given task"/>
+      <ownedParameter direction="return">
+        <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+      </ownedParameter>
+      <ownedParameter name="toTask" type="//Task"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" name="User">
+    <ownedAttribute name="firstname">
+      <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute name="lastname">
+      <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute name="age">
+      <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Integer"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" value="1"/>
+    </ownedAttribute>
+    <ownedOperation name="getFullname">
+      <ownedComment body="Return the full name name of the user (firstname + lastname)"/>
+      <ownedParameter direction="return"/>
+    </ownedOperation>
+    <ownedOperation name="owned">
+      <ownedComment body="Return whether or not a user owned the given task"/>
+      <ownedParameter direction="return">
+        <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//Boolean"/>
+      </ownedParameter>
+      <ownedParameter name="atask" type="//Task"/>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Enumeration" name="Priority">
+    <ownedLiteral name="LOW"/>
+    <ownedLiteral name="MEDIUM"/>
+    <ownedLiteral name="HARD"/>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" name="DelayedTask">
+    <generalization general="//Task"/>
+    <ownedAttribute name="startAt">
+      <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" value="1"/>
+    </ownedAttribute>
+    <ownedAttribute name="endAt">
+      <type xsi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#//String"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger" value="1"/>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" name="association" memberEnd="//association/duties //association/owner" navigableOwnedEnd="//association/owner //association/duties">
+    <ownedEnd name="owner" type="//User" association="//association">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="1"/>
+      <lowerValue xsi:type="uml:LiteralInteger"/>
+    </ownedEnd>
+    <ownedEnd name="duties" type="//Task" association="//association">
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" value="*"/>
+      <lowerValue xsi:type="uml:LiteralInteger"/>
+    </ownedEnd>
+  </packagedElement>
+</uml:Model>

@@ -1,0 +1,10 @@
+[comment encoding = UTF-8 /]
+[module migrations('http://www.eclipse.org/uml2/3.0.0/UML')]
+
+
+[template public generateMigrations(aModel : Model)]
+
+[file (aModel.name, false, 'UTF-8')]
+
+[/file]
+[/template]

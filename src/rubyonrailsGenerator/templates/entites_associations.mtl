@@ -1,0 +1,86 @@
+[comment encoding = UTF-8 /]
+[module entites_associations('http://www.eclipse.org/uml2/3.0.0/UML')]
+
+[** 
+  	=========================			  
+  		MAIN   
+	=========================
+*/]
+[template public generateEntitiesAndAssociations(aModel : Model)]
+[comment @main /]
+[aModel.entites() /]
+[/template]
+
+[** 
+  	=========================			  
+  		TEMPLATES   
+	=========================
+*/]
+
+[template public entites(m : Model)]
+	[for (klass : PackageableElement | m.packagedElement)]
+		[klass.generateRModel() /]
+	[/for]
+[/template]
+
+[template public generateRModel(klass : PackageableElement) /]
+
+[template public generateRModel(klass : Class)]
+	[file (getModelFilename(klass) , false, 'UTF-8')]
+class [klass.classify() /]  < ActiveRecord::Base
+  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (isClass()) ]:[attr.name.toLower()/][/for]
+end
+	[/file]
+[/template]
+
+[template public generateRModel(enum : Enumeration) ]
+	[file (getModelFilename(enum) , false, 'UTF-8')]
+class [enum.classify() /] 
+  [for (p : EnumerationLiteral | enum.ownedLiteral)  ]
+  self.[p.name.toUpper() /] = [i /]
+  [/for]
+end
+	[/file]
+[/template]
+
+
+[** 
+  	=========================			  
+  		HELPERS   
+	=========================
+*/]
+
+[**
+ * Check if a class is an enum
+ * @param pe	UML Class or Enumerable
+ */]
+[query public isEnum(pe : PackageableElement) : Boolean 
+		= pe.oclIsTypeOf(Enumeration) /]
+
+[**
+ * Return all attributes of the class except association member
+ * @param klass	
+ */]
+[query public isClass(p : Property) : Boolean
+		= p.association.name.oclIsUndefined() /]
+
+[**
+ * Return the ruby class name from Rails naming conventions
+ * @param pe	UML Class or Enumerable
+ */]
+[query public classify(pe : PackageableElement) :  String
+	= pe.name	
+			.trim()
+			.toUpperFirst() /]
+
+[**
+ * Return the right ruby filename for the class including the root path
+ * @param pe	UML Class or Enumerable
+ */]
+[query public getModelFilename(pe : PackageableElement) :  String
+	= 'app/models/' + 
+			pe.name
+				.toLowerFirst()
+				.replaceAll('([A-Z])', '_$1')
+				.toLower()
+				.concat('.rb')	/]

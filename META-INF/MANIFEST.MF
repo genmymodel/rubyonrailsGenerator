@@ -20,5 +20,6 @@ require-bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
-Export-Package: rubyonrailsGenerator.main
+Export-Package: rubyonrailsGenerator.main,
+ rubyonrailsGenerator.templates
 
