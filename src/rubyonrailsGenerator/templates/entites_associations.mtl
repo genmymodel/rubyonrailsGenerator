@@ -30,18 +30,47 @@
 class [klass.classify() /]  < [klass.superKlass() /]
 
   # Attributes
-  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (not isClass()) ]:[attr.name.underscore()/][/for]
+  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (not isClass()) ][attr.name.to_sym()/][/for]
 
   # Associations
-  [for (p : Property | klass.attribute) ? (isClass()) ]
-  ++[p.association.ownedEnd.toString() /]	
+  [klass.generateAssociations()/]
 
-  --[p.association.navigableOwnedEnd.toString() /]
-  [/for]
+  [klass.generateOperations()/]
   
-
 end
 	[/file]
+[/template]
+
+[template public generateMethod (op : Operation) ? (getReturnResult().type.name = 'Boolean') ]
+# [op.getDesc() /]
+def [op.name.concat('?') /] ;end
+[/template]
+
+[template public generateMethod (op : Operation) ]
+# [op.getDesc() /]
+def [op.name /] ;end
+[/template]
+
+[template public generateOperations(klass : Class)]
+[for (op : Operation | klass.getAllOperations())]
+[generateMethod(op)/]
+
+[/for]
+[/template]
+
+[template public generateAssociations (klass : Class)]
+[for (p : Property | klass.attribute) ? (isClass()) ]
+  	[if 	( isOneToOne  (p, oppositeOf(p)) )]
+  	[comment "Issue because I don't know which value to set as primary key" /]
+has_one [p.name.to_sym() /]
+    [elseif ( isOneToMany (p, oppositeOf(p)) )]
+belong_to [p.name.to_sym() /]
+	[elseif ( isManyToOne (p, oppositeOf(p)) )]
+has_many [p.name.to_sym() /]
+	[elseif ( isManyToMany(p, oppositeOf(p)) )]
+has_and_belongs_to_many [p.name.to_sym() /]
+  	[/if]
+  [/for]
 [/template]
 
 [template public generateRModel(enum : Enumeration) ]
@@ -104,6 +133,13 @@ ActiveRecord::Base
 			 .toLower() /]
 
 [**
+ * Convert the string given as ruby symbol
+ * @param str	
+ */]
+[query public to_sym(str : String) :  String
+		= ':'.concat(str.underscore()) /]
+
+[**
  * Return the right ruby filename for the class including the root path
  * @param pe	UML Class or Enumerable
  */]
@@ -113,7 +149,60 @@ ActiveRecord::Base
 				.underscore()
 				.concat('.rb')	/]
 
+[**
+ * Get the Second member of the given poperty within their association 
+ * @param p	
+ */]
+[query public oppositeOf(p : Property) : Property 
+	=  p.association.memberEnd->select(name <> p.name)->first() /]
 
-[query public oppositeAttributeOf(p : Property) : Property 
-	=  p.association.memberEnd->select(name <> p.name)/]
+
+[**
+ * Return whether or not the association is a ONE-TO-ONE association 
+ * @param fst : To first member related to the Model where it is
+ * @param snd : To second member
+ *
+ * TODO: Check correctly the multplicity 0, 1, * 
+ * 		 Handle stuff with precise multiplicy 
+ */]
+[query public isOneToOne(fst : Property, snd : Property) : Boolean 
+	= fst.getUpper() =  1 and	snd.getUpper() = 1 /]
+
+[**
+ * Return whether or not the association is a ONE-TO-MANY association 
+ * @param fst : To first member related to the Model where it is
+ * @param snd : To second member	
+ */]
+[query public isOneToMany(fst : Property, snd : Property) : Boolean 
+	= fst.getUpper() = 1 and snd.getUpper().isIfinite() /]
+
+[**
+ * Return whether or not the association is a MANY-TO-ONE association 
+ * @param fst : To first member related to the Model where it is
+ * @param snd : To second member
+ */]
+[query public isManyToOne(fst : Property, snd : Property) : Boolean 
+	= fst.getUpper().isIfinite() and snd.getUpper() = 1 /]
+
+[**
+ * Return whether or not the association is a MANY-TO-MANY association 
+ * @param fst : To first member related to the Model where it is
+ * @param snd : To second member
+ */]
+[query public isManyToMany(fst : Property, snd : Property) : Boolean 
+	= fst.getUpper().isIfinite() and snd.getUpper().isIfinite() /]
+
+[**
+ * Return whether or not the mutiplicity is infinite 
+ * @param multiplicity 
+ */]
+[query public isIfinite(multiplicity : Integer) : Boolean 
+	= multiplicity = -1 /]
+
+[**
+ * Return the description text of a method (oeration) 
+ * @param op 
+ */]
+[query public getDesc(op : Operation) : Bag(String) 
+	= op.ownedComment._body /]
 
