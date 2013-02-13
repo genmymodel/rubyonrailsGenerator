@@ -8,7 +8,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package rubyonrailsGenerator.main;
+package rubyonrailsGenerator.templates;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,24 +25,24 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
- * Entry point of the 'Bootstrap' generation module.
+ * Entry point of the 'Migrations' generation module.
  *
  * @generated
  */
-public class Bootstrap extends AbstractAcceleoGenerator {
+public class Migrations extends AbstractAcceleoGenerator {
     /**
      * The name of the module.
      *
      * @generated
      */
-    public static final String MODULE_FILE_NAME = "/rubyonrailsGenerator/main/bootstrap";
+    public static final String MODULE_FILE_NAME = "/rubyonrailsGenerator/templates/migrations";
     
     /**
      * The name of the templates that are to be generated.
      *
      * @generated
      */
-    public static final String[] TEMPLATE_NAMES = { "generateProject" };
+    public static final String[] TEMPLATE_NAMES = { "generateMigrations" };
     
     /**
      * The list of properties files from the launch parameters (Launch configuration).
@@ -65,7 +65,7 @@ public class Bootstrap extends AbstractAcceleoGenerator {
      *
      * @generated
      */
-    public Bootstrap() {
+    public Migrations() {
         // Empty implementation
     }
 
@@ -85,7 +85,7 @@ public class Bootstrap extends AbstractAcceleoGenerator {
      *             the model cannot be loaded.
      * @generated
      */
-    public Bootstrap(URI modelURI, File targetFolder,
+    public Migrations(URI modelURI, File targetFolder,
             List<? extends Object> arguments) throws IOException {
         initialize(modelURI, targetFolder, arguments);
     }
@@ -106,7 +106,7 @@ public class Bootstrap extends AbstractAcceleoGenerator {
      *             This can be thrown in two scenarios : the module cannot be found, or it cannot be loaded.
      * @generated
      */
-    public Bootstrap(EObject model, File targetFolder,
+    public Migrations(EObject model, File targetFolder,
             List<? extends Object> arguments) throws IOException {
         initialize(model, targetFolder, arguments);
     }
@@ -141,7 +141,7 @@ public class Bootstrap extends AbstractAcceleoGenerator {
                  * add in "arguments" this "String" attribute.
                  */
                 
-                Bootstrap generator = new Bootstrap(modelURI, folder, arguments);
+                Migrations generator = new Migrations(modelURI, folder, arguments);
                 
                 /*
                  * Add the properties from the launch arguments.

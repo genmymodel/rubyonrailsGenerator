@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="entites_associations" name="rubyonrailsGenerator">
+<project default="generator" name="rubyonrailsGenerator">
     <property name="ECLIPSE_HOME" value="../../../../../../../../Applications/eclipse"/>
     <property name="ECLIPSE_WORKSPACE" value="../.."/>
 
@@ -48,8 +48,8 @@
     </path>
 
     <!-- The default task with the jars used by this project -->
-    <target name="entites_associations">
-        <java classname="rubyonrailsGenerator.templates.Entites_associations" classpathref="rubyonrailsGenerator.classpath">
+    <target name="generator">
+        <java classname="rubyonrailsGenerator.main.Generator" classpathref="rubyonrailsGenerator.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>
@@ -59,8 +59,8 @@
         In case of problem you can also try with all the jar available in your Eclipse
         Keep in mind that having two versions of the same jar can create problems
     -->
-    <target name="entites_associations.alljars">
-        <java classname="rubyonrailsGenerator.templates.Entites_associations" classpathref="rubyonrailsGenerator.classpath">
+    <target name="generator.alljars">
+        <java classname="rubyonrailsGenerator.main.Generator" classpathref="rubyonrailsGenerator.classpath">
             <arg value="${model}"/>
             <arg value="${target}"/>
         </java>

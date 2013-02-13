@@ -2,7 +2,6 @@
 [module bootstrap('http://www.eclipse.org/uml2/3.0.0/UML')]
 
 [import rubyonrailsGenerator::templates::entites_associations /]
-[import rubyonrailsGenerator::templates::controllers /]
 [import rubyonrailsGenerator::templates::migrations /]
 
 [template public generateProject(model : Model)]

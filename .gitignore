@@ -1,4 +1,6 @@
 bin/
 scripts/
 app/
+.DS_Store
+db/
 

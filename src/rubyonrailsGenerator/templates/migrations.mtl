@@ -1,10 +1,36 @@
 [comment encoding = UTF-8 /]
 [module migrations('http://www.eclipse.org/uml2/3.0.0/UML')]
 
+[import rubyonrailsGenerator::templates::helpers /]
+[** 
+  	=================================================================			  
+  						MIGRATIONS  TEMPLATES   
+	=================================================================
+*/]
+
 
 [template public generateMigrations(aModel : Model)]
-
-[file (aModel.name, false, 'UTF-8')]
-
-[/file]
+	[comment @main /]
+	[for (klass : Class | aModel.packagedElement->filter(Class))]
+		[generateRMigration(klass, i) /]
+	[/for]
+	
 [/template]
+
+
+[template public generateRMigration(klass : Class, count : Integer)]
+	[file (klass.getMigrationFilename(count), false, 'UTF-8')]
+class [klass.getMigrationName() /] < ActiveRecord::Migration
+  def change
+    create_table [klass.name.underscore().to_sym() /] do |t|
+	  [for (attr : Property | klass.attribute)]
+	  	t.[attr.type.name.toLower() /] [attr.name.to_sym() /] 
+	  [/for]
+
+      t.timestamps # To generate rails timestamp fields
+    end
+  end
+end
+	[/file]
+[/template]
+

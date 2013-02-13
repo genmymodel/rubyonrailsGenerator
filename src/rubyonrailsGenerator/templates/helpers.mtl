@@ -1,90 +1,10 @@
 [comment encoding = UTF-8 /]
-[module entites_associations('http://www.eclipse.org/uml2/3.0.0/UML')]
+[module helpers('http://www.eclipse.org/uml2/3.0.0/UML')]
 
 [** 
   	=================================================================			  
-  				ENTITIES AND ASSOCIATIONS TEMPLATES   
+  								HELPERS
 	=================================================================
-*/]
-
-[template public generateEntitesAndAssociations(m : Model)]
-	[m.packagedElement.generateRModel() /]
-[/template]
-
-[template public generateRModel(klass : PackageableElement) /]
-
-[template public generateRModel(klass : Class)]
-	[file (getModelFilename(klass) , false, 'UTF-8')]
-class [klass.classify() /]  < [klass.superKlass() /]
-
-  # Attributes
-  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (not isClass()) ][attr.name.to_sym()/][/for]
-
-  # Associations
-  [klass.generateAssociations()/]
-
-  [klass.generateOperations()/]
-  
-end
-	[/file]
-[/template]
-
-[template public generateMethod (op : Operation) ? (getReturnResult().type.name = 'Boolean') ]
-# [op.getDesc() /]
-def [op.name.concat('?') /] ;end
-[/template]
-
-[template public generateMethod (op : Operation) ]
-# [op.getDesc() /]
-def [op.name /] ;end
-[/template]
-
-[template public generateOperations(klass : Class)]
-[for (op : Operation | klass.getAllOperations())]
-[generateMethod(op)/]
-
-[/for]
-[/template]
-
-[template public generateAssociations (klass : Class)]
-[for (p : Property | klass.attribute) ? (isClass()) ]
-  	[if 	( isOneToOne  (p, oppositeOf(p)) )]
-  	[comment "Issue because I don't know which value to set as primary key" /]
-has_one [p.name.to_sym() /]
-    [elseif ( isOneToMany (p, oppositeOf(p)) )]
-belong_to [p.name.to_sym() /]
-	[elseif ( isManyToOne (p, oppositeOf(p)) )]
-has_many [p.name.to_sym() /]
-	[elseif ( isManyToMany(p, oppositeOf(p)) )]
-has_and_belongs_to_many [p.name.to_sym() /]
-  	[/if]
-  [/for]
-[/template]
-
-[template public generateRModel(enum : Enumeration) ]
-	[file (getModelFilename(enum) , false, 'UTF-8')]
-class [enum.classify() /] 
-  [for (p : EnumerationLiteral | enum.ownedLiteral)  ]
-  self.[p.name.toUpper() /] = [i /]
-  [/for]
-end
-	[/file]
-[/template]
-
-[template public superKlass(klass : Class)]
-	[if (klass.general.name->isEmpty())]
-ActiveRecord::Base
-	[else]
-[klass.general.name /]				
-	[/if]
-[/template] 
-
-
-
-[** 
-  	=========================			  
-  		HELPERS   
-	=========================
 */]
 
 [**
@@ -102,6 +22,7 @@ ActiveRecord::Base
 [query public isClass(p : Property) : Boolean
 		= not p.association.name.oclIsUndefined() /]
 
+
 [**
  * Return the ruby class name from Rails naming conventions
  * @param pe	UML Class or Enumerable
@@ -110,6 +31,7 @@ ActiveRecord::Base
 		= pe.name	
 				.trim()
 				.toUpperFirst() /]
+
 
 [**
  * Format the string given as parameter to fit naming conventions
@@ -120,12 +42,14 @@ ActiveRecord::Base
 			 .replaceAll('([A-Z])', '_$1')
 			 .toLower() /]
 
+
 [**
  * Convert the string given as ruby symbol
  * @param str	
  */]
 [query public to_sym(str : String) :  String
 		= ':'.concat(str.underscore()) /]
+
 
 [**
  * Return the right ruby filename for the class including the root path
@@ -136,6 +60,7 @@ ActiveRecord::Base
 			pe.name
 				.underscore()
 				.concat('.rb')	/]
+
 
 [**
  * Get the Second member of the given poperty within their association 
@@ -156,6 +81,7 @@ ActiveRecord::Base
 [query public isOneToOne(fst : Property, snd : Property) : Boolean 
 	= fst.getUpper() =  1 and	snd.getUpper() = 1 /]
 
+
 [**
  * Return whether or not the association is a ONE-TO-MANY association 
  * @param fst : To first member related to the Model where it is
@@ -163,6 +89,7 @@ ActiveRecord::Base
  */]
 [query public isOneToMany(fst : Property, snd : Property) : Boolean 
 	= fst.getUpper() = 1 and snd.getUpper().isIfinite() /]
+
 
 [**
  * Return whether or not the association is a MANY-TO-ONE association 
@@ -172,6 +99,7 @@ ActiveRecord::Base
 [query public isManyToOne(fst : Property, snd : Property) : Boolean 
 	= fst.getUpper().isIfinite() and snd.getUpper() = 1 /]
 
+
 [**
  * Return whether or not the association is a MANY-TO-MANY association 
  * @param fst : To first member related to the Model where it is
@@ -180,12 +108,14 @@ ActiveRecord::Base
 [query public isManyToMany(fst : Property, snd : Property) : Boolean 
 	= fst.getUpper().isIfinite() and snd.getUpper().isIfinite() /]
 
+
 [**
  * Return whether or not the mutiplicity is infinite 
  * @param multiplicity 
  */]
 [query public isIfinite(multiplicity : Integer) : Boolean 
 	= multiplicity = -1 /]
+
 
 [**
  * Return the description text of a method (oeration) 
@@ -194,3 +124,46 @@ ActiveRecord::Base
 [query public getDesc(op : Operation) : Bag(String) 
 	= op.ownedComment._body /]
 
+
+[**
+ * Return the plural of the given word GROS FAKE 
+ * @param word	
+ */]
+[query public pluralize(s : String) : String =
+	invoke('org.jvnet.inflector.lang.en.NounPluralizer','pluralize(java.lang.String)', Sequence{s}) /]
+
+
+
+[**
+ * Return the right ruby filename for the class including the root path
+ * @param pe	UML Class or Enumerable
+ */]
+[query public getControllerFilename(klass : Class) :  String
+		= 'app/controllers/' + 
+			klass.name.pluralize()
+				.underscore()
+				.concat('_controller.rb')	/]
+
+
+
+[**
+ * Return the right ruby filename for the class including the root path
+ * @param pe	UML Class or Enumerable
+ */]
+[query public getMigrationFilename(klass : Class, count : Integer) :  String
+		= 'db/migrate/' + 
+			klass.timestamp() + '_' +
+			klass.getMigrationName()
+				.underscore()
+				.concat('.rb')	/]
+
+
+[**
+ * Return the right ruby filename for the class including the root path
+ * @param pe	UML Class or Enumerable
+ */]
+[query public getMigrationName(klass : Class) :  String
+		= 'Create' + klass.name.toUpperFirst().pluralize() /]
+
+[query public timestamp(klass : Class) : String
+		= invoke('java.lang.System', 'currentTimeMillis().toString()', null) /]
