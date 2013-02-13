@@ -11,18 +11,15 @@
 
 [template public generateMigrations(aModel : Model)]
 	[comment @main /]
-	[for (klass : Class | aModel.packagedElement->filter(Class))]
-		[generateRMigration(klass, i) /]
-	[/for]
-	
+	[aModel.packagedElement->filter(Class).generateRMigration() /]
 [/template]
 
 
-[template public generateRMigration(klass : Class, count : Integer)]
-	[file (klass.getMigrationFilename(count), false, 'UTF-8')]
+[template public generateRMigration(klass : Class)]
+	[file (klass.getMigrationFilename(), false, 'UTF-8')]
 class [klass.getMigrationName() /] < ActiveRecord::Migration
   def change
-    create_table [klass.name.underscore().to_sym() /] do |t|
+    create_table [klass.name.underscore().pluralize().to_sym() /] do |t|
 	  [for (attr : Property | klass.attribute)]
 	  	t.[attr.type.name.toLower() /] [attr.name.to_sym() /] 
 	  [/for]

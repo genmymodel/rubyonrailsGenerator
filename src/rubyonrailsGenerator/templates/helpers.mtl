@@ -150,7 +150,7 @@
  * Return the right ruby filename for the class including the root path
  * @param pe	UML Class or Enumerable
  */]
-[query public getMigrationFilename(klass : Class, count : Integer) :  String
+[query public getMigrationFilename(klass : Class) :  String
 		= 'db/migrate/' + 
 			klass.timestamp() + '_' +
 			klass.getMigrationName()
