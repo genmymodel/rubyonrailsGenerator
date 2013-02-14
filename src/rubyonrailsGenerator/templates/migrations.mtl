@@ -10,8 +10,7 @@
 
 
 [template public generateMigrations(aModel : Model)]
-	[comment @main /]
-	[aModel.packagedElement->filter(Class).generateRMigration() /]
+[aModel.packagedElement->filter(Class).generateRMigration() /]
 [/template]
 
 

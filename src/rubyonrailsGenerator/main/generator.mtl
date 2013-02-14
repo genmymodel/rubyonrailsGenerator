@@ -10,5 +10,5 @@
 [comment @main/]
 [aModel.generateEntitesAndAssociations() /]
 [aModel.generateMigrations() /]
-
+[aModel.generateControllers() /]
 [/template]
