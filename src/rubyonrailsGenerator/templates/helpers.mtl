@@ -8,11 +8,11 @@
 */]
 
 [**
- * Check if a class is an enum
- * @param pe	UML Class or Enumerable
+ * Check if an attribute is an enumeration
+ * @param property	
  */]
-[query public isEnum(pe : PackageableElement) : Boolean 
-		= pe.oclIsTypeOf(Enumeration) /]
+[query public isEnum(property : Property) : Boolean 
+		= property.type.oclIsKindOf(Enumeration) /]
 
 
 [**
@@ -166,11 +166,34 @@
 
 
 [**
- * Return the right ruby filename for the class including the root path
- * @param pe	UML Class or Enumerable
+ * Return the right ruby name for the migration
+ * @param Class	klass
  */]
 [query public getMigrationName(klass : Class) :  String
 		= 'Create' + klass.name.toUpperFirst().pluralize() /]
+
+
+[**
+ * Return the right ruby name for the join migration
+ * @param Class	klass
+ */]
+[query public getJoinMigrationName(p : Property) :  String
+		= 'Joins' + 
+			p.class.name.toUpperFirst().pluralize() +
+			oppositeOf(p).name.toUpperFirst().pluralize() /]
+
+
+[**
+ * Return the right ruby name for the join migration between 'prop' and its opposite
+ * @param prop
+ */]
+[query public getJoinMigrationFilename(prop : Property) :  String
+		= 'db/migrate/' + 
+			prop.class.timestamp() + '_' +
+			prop.getJoinMigrationName()
+				.underscore()
+				.concat('.rb')	/]
+
 
 [query public timestamp(klass : Class) : String
 		= invoke('java.lang.System', 'currentTimeMillis().toString()', null) /]

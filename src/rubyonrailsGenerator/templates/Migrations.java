@@ -8,13 +8,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package rubyonrailsGenerator.main;
+package rubyonrailsGenerator.templates;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
@@ -24,28 +23,26 @@ import org.eclipse.emf.common.util.Monitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.resource.UMLResource;
 
 /**
- * Entry point of the 'Generator' generation module.
+ * Entry point of the 'Migrations' generation module.
  *
  * @generated
  */
-public class Generator extends AbstractAcceleoGenerator {
+public class Migrations extends AbstractAcceleoGenerator {
     /**
      * The name of the module.
      *
      * @generated
      */
-    public static final String MODULE_FILE_NAME = "/rubyonrailsGenerator/main/generator";
+    public static final String MODULE_FILE_NAME = "/rubyonrailsGenerator/templates/migrations";
     
     /**
      * The name of the templates that are to be generated.
      *
      * @generated
      */
-    public static final String[] TEMPLATE_NAMES = { "main" };
+    public static final String[] TEMPLATE_NAMES = { "generateJoinMigrations" };
     
     /**
      * The list of properties files from the launch parameters (Launch configuration).
@@ -68,7 +65,7 @@ public class Generator extends AbstractAcceleoGenerator {
      *
      * @generated
      */
-    public Generator() {
+    public Migrations() {
         // Empty implementation
     }
 
@@ -88,7 +85,7 @@ public class Generator extends AbstractAcceleoGenerator {
      *             the model cannot be loaded.
      * @generated
      */
-    public Generator(URI modelURI, File targetFolder,
+    public Migrations(URI modelURI, File targetFolder,
             List<? extends Object> arguments) throws IOException {
         initialize(modelURI, targetFolder, arguments);
     }
@@ -109,7 +106,7 @@ public class Generator extends AbstractAcceleoGenerator {
      *             This can be thrown in two scenarios : the module cannot be found, or it cannot be loaded.
      * @generated
      */
-    public Generator(EObject model, File targetFolder,
+    public Migrations(EObject model, File targetFolder,
             List<? extends Object> arguments) throws IOException {
         initialize(model, targetFolder, arguments);
     }
@@ -144,7 +141,7 @@ public class Generator extends AbstractAcceleoGenerator {
                  * add in "arguments" this "String" attribute.
                  */
                 
-                Generator generator = new Generator(modelURI, folder, arguments);
+                Migrations generator = new Migrations(modelURI, folder, arguments);
                 
                 /*
                  * Add the properties from the launch arguments.
@@ -338,7 +335,7 @@ public class Generator extends AbstractAcceleoGenerator {
      * 
      * @param resourceSet
      *            The resource set which registry has to be updated.
-     * @generated NOT
+     * @generated
      */
     @Override
     public void registerPackages(ResourceSet resourceSet) {
@@ -346,15 +343,6 @@ public class Generator extends AbstractAcceleoGenerator {
         if (!isInWorkspace(org.eclipse.uml2.uml.UMLPackage.class)) {
             resourceSet.getPackageRegistry().put(org.eclipse.uml2.uml.UMLPackage.eINSTANCE.getNsURI(), org.eclipse.uml2.uml.UMLPackage.eINSTANCE);
         }
-        
-        resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-        
-        Map<URI,URI> uriMap = resourceSet.getURIConverter().getURIMap();  
-        URI uri = URI.createURI("jar:file:/Applications/eclipse/plugins/org.eclipse.uml2.uml.resources_3.1.100.v201008191510.jar!/");
-
-        uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment(""));
-        uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));
-        uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri.appendSegment("profiles").appendSegment(""));
         
         /*
          * If you want to change the content of this method, do NOT forget to change the "@generated"
@@ -394,7 +382,7 @@ public class Generator extends AbstractAcceleoGenerator {
      * 
      * @param resourceSet
      *            The resource set which registry has to be updated.
-     * @generated 
+     * @generated
      */
     @Override
     public void registerResourceFactories(ResourceSet resourceSet) {

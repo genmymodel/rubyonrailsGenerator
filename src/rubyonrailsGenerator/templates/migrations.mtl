@@ -11,6 +11,7 @@
 
 [template public generateMigrations(aModel : Model)]
 [aModel.packagedElement->filter(Class).generateRMigration() /]
+[aModel.generateJoinMigrations() /]
 [/template]
 
 
@@ -19,12 +20,35 @@
 class [klass.getMigrationName() /] < ActiveRecord::Migration
   def change
     create_table [klass.name.underscore().pluralize().to_sym() /] do |t|
-	  [for (attr : Property | klass.attribute)]
+	  [for (attr : Property | klass.attribute) ? (not isClass() and not isEnum())]
 	  	t.[attr.type.name.toLower() /] [attr.name.to_sym() /] 
 	  [/for]
 
-      t.timestamps # To generate rails timestamp fields
+      t.timestamps # To generate rails timestamp fields 
     end
+  end
+end
+	[/file]
+[/template]
+
+
+[template public generateJoinMigrations(model : Model)]
+	[comment @main /]
+	[for (assoc : Association | model.packagedElement->filter(Association))]
+		[let p : Property = assoc.memberEnd->first() ]
+			[p.generateOneToOneJoinRMigration() /]
+		[/let]
+	[/for]
+[/template]
+
+
+[template public generateOneToOneJoinRMigration(p : Property)]
+	[file (p.getJoinMigrationFilename(), false, 'UTF-8')]
+class [p.getJoinMigrationFilename() /] < ActiveRecord::Migration
+  def change
+	[let table_name : String = p.class.name]
+    add_column [table_name.pluralize().to_sym() /], [p.oppositeOf().class.name.concat('_id').to_sym() /], :integer		
+	[/let]
   end
 end
 	[/file]

@@ -1,6 +1,8 @@
 [comment encoding = UTF-8 /]
 [module entites_associations('http://www.eclipse.org/uml2/3.0.0/UML')]
 
+[import rubyonrailsGenerator::templates::helpers /]
+
 [** 
   	=================================================================			  
   				ENTITIES AND ASSOCIATIONS TEMPLATES   
@@ -78,119 +80,4 @@ ActiveRecord::Base
 [klass.general.name /]				
 	[/if]
 [/template] 
-
-
-
-[** 
-  	=========================			  
-  		HELPERS   
-	=========================
-*/]
-
-[**
- * Check if a class is an enum
- * @param pe	UML Class or Enumerable
- */]
-[query public isEnum(pe : PackageableElement) : Boolean 
-		= pe.oclIsTypeOf(Enumeration) /]
-
-
-[**
- * Return all attributes of the class except association member
- * @param klass	
- */]
-[query public isClass(p : Property) : Boolean
-		= not p.association.name.oclIsUndefined() /]
-
-[**
- * Return the ruby class name from Rails naming conventions
- * @param pe	UML Class or Enumerable
- */]
-[query public classify(pe : PackageableElement) :  String
-		= pe.name	
-				.trim()
-				.toUpperFirst() /]
-
-[**
- * Format the string given as parameter to fit naming conventions
- * @param str	
- */]
-[query public underscore(str : String) :  String
-		= str.toLowerFirst()
-			 .replaceAll('([A-Z])', '_$1')
-			 .toLower() /]
-
-[**
- * Convert the string given as ruby symbol
- * @param str	
- */]
-[query public to_sym(str : String) :  String
-		= ':'.concat(str.underscore()) /]
-
-[**
- * Return the right ruby filename for the class including the root path
- * @param pe	UML Class or Enumerable
- */]
-[query public getModelFilename(pe : PackageableElement) :  String
-		= 'app/models/' + 
-			pe.name
-				.underscore()
-				.concat('.rb')	/]
-
-[**
- * Get the Second member of the given poperty within their association 
- * @param p	
- */]
-[query public oppositeOf(p : Property) : Property 
-	=  p.association.memberEnd->select(name <> p.name)->first() /]
-
-
-[**
- * Return whether or not the association is a ONE-TO-ONE association 
- * @param fst : To first member related to the Model where it is
- * @param snd : To second member
- *
- * TODO: Check correctly the multplicity 0, 1, * 
- * 		 Handle stuff with precise multiplicy 
- */]
-[query public isOneToOne(fst : Property, snd : Property) : Boolean 
-	= fst.getUpper() =  1 and	snd.getUpper() = 1 /]
-
-[**
- * Return whether or not the association is a ONE-TO-MANY association 
- * @param fst : To first member related to the Model where it is
- * @param snd : To second member	
- */]
-[query public isOneToMany(fst : Property, snd : Property) : Boolean 
-	= fst.getUpper() = 1 and snd.getUpper().isIfinite() /]
-
-[**
- * Return whether or not the association is a MANY-TO-ONE association 
- * @param fst : To first member related to the Model where it is
- * @param snd : To second member
- */]
-[query public isManyToOne(fst : Property, snd : Property) : Boolean 
-	= fst.getUpper().isIfinite() and snd.getUpper() = 1 /]
-
-[**
- * Return whether or not the association is a MANY-TO-MANY association 
- * @param fst : To first member related to the Model where it is
- * @param snd : To second member
- */]
-[query public isManyToMany(fst : Property, snd : Property) : Boolean 
-	= fst.getUpper().isIfinite() and snd.getUpper().isIfinite() /]
-
-[**
- * Return whether or not the mutiplicity is infinite 
- * @param multiplicity 
- */]
-[query public isIfinite(multiplicity : Integer) : Boolean 
-	= multiplicity = -1 /]
-
-[**
- * Return the description text of a method (oeration) 
- * @param op 
- */]
-[query public getDesc(op : Operation) : Bag(String) 
-	= op.ownedComment._body /]
 
