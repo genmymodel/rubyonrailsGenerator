@@ -350,7 +350,7 @@ public class Generator extends AbstractAcceleoGenerator {
         resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
         
         Map<URI,URI> uriMap = resourceSet.getURIConverter().getURIMap();  
-        URI uri = URI.createURI("jar:file:/Applications/eclipse/plugins/org.eclipse.uml2.uml_3.2.100.v201108110105.jar!/");
+        URI uri = URI.createURI("jar:file:/home/vince/dev/eclipses/eclipse-indigo/plugins/org.eclipse.uml2.uml.resources_3.1.100.v201008191510.jar!/");
         uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment(""));
         uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));
         uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri.appendSegment("profiles").appendSegment(""));
@@ -401,11 +401,6 @@ public class Generator extends AbstractAcceleoGenerator {
         
        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
 
-       Map<URI,URI> uriMap = resourceSet.getURIConverter().getURIMap();  
-       URI uri = URI.createURI("jar:file:/Applications/eclipse/plugins/org.eclipse.uml2.uml_3.2.100.v201108110105.jar!/");
-       uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment(""));
-       uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));
-       uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri.appendSegment("profiles").appendSegment(""));
         /*
          * If you want to change the content of this method, do NOT forget to change the "@generated"
          * tag in the Javadoc of this method to "@generated NOT". Without this new tag, any compilation
