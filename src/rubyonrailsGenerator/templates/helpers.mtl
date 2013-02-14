@@ -147,7 +147,7 @@
 
 
 [**
- * Return the right ruby filename for the class including the root path
+ * Return the right ruby filename for the migration
  * @param pe	UML Class or Enumerable
  */]
 [query public getMigrationFilename(klass : Class) :  String
@@ -156,6 +156,13 @@
 			klass.getMigrationName()
 				.underscore()
 				.concat('.rb')	/]
+
+[**
+ * Return the right ruby filename for the migration
+ * @param pe	UML Class or Enumerable
+ */]
+[query public getAssetFilename(model : Model) :  String
+		= 'app/assets/stylesheets/' + model.name.underscore().concat('.scss') /]
 
 
 [**

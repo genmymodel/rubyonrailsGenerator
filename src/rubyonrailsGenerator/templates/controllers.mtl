@@ -11,4 +11,4 @@
 	[file (klass.getControllerFilename(), false, 'MacRoman')]
 		
 	[/file]
-[/template]
+[/template] 
