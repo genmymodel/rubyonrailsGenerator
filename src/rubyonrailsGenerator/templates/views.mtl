@@ -22,7 +22,31 @@
 
 [template public generateFormView(klass : Class)]
 	[file (klass.getViewsFilename().concat('_form.html.erb'), false, 'UTF-8')]
-		
+		[let model_name : String = klass.name.toLower()]
+<%= form_for(@[model_name /]) do |f| %>
+  <% if @[model_name /].errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@[model_name /].errors.count, "error") %> prohibited this [model_name /] from being saved:</h2>
+
+      <ul>
+      <% @[model_name /].errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+	[for (attr : Property | klass.attribute) ? (not isClass() and not isEnum())]
+<div class="field">
+   
+</div>
+	[/for]
+  
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+		[/let]
 	[/file]
 [/template]
 
