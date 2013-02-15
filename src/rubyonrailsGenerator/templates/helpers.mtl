@@ -158,11 +158,18 @@
 				.concat('.rb')	/]
 
 [**
- * Return the right ruby filename for the migration
- * @param pe	UML Class or Enumerable
+ * Return the filename for the generated asset
+ * @param model
  */]
 [query public getAssetFilename(model : Model) :  String
 		= 'app/assets/stylesheets/' + model.name.underscore().concat('.scss') /]
+
+[**
+ * Return the path for the directory containing views for the given 'klass'
+ * @param klass
+ */]
+[query public getViewsFilename(klass : Class) :  String
+		= 'app/views/' + klass.name.pluralize().underscore().concat('/') /]
 
 
 [**

@@ -1,0 +1,51 @@
+[comment encoding = UTF-8 /]
+[module views('http://www.eclipse.org/uml2/3.0.0/UML')]
+
+[import rubyonrailsGenerator::templates::helpers /]
+
+
+[template public generateViews(aModel : Model)]
+[comment @main/]
+[aModel.generateRViews()/]
+[/template]
+
+
+[template public generateRViews(model : Model)]
+	[for (klass : Class | model.packagedElement->filter(Class))]
+		[klass.generateFormView()/]     
+		[klass.generateIndexView()/]    
+		[klass.generateEditView()/]     
+		[klass.generateNewView()/]      
+		[klass.generateShowView()/]     
+	[/for]
+[/template]
+
+[template public generateFormView(klass : Class)]
+	[file (klass.getViewsFilename().concat('_form.html.erb'), false, 'UTF-8')]
+		
+	[/file]
+[/template]
+
+[template public generateIndexView(klass : Class)]
+	[file (klass.getViewsFilename().concat('index.html.erb'), false, 'UTF-8')]
+		
+	[/file]
+[/template]
+
+[template public generateShowView(klass : Class)]
+	[file (klass.getViewsFilename().concat('show.html.erb'), false, 'UTF-8')]
+		
+	[/file]
+[/template]
+
+[template public generateEditView(klass : Class)]
+	[file (klass.getViewsFilename().concat('edit.html.erb'), false, 'UTF-8')]
+		
+	[/file]
+[/template]
+
+[template public generateNewView(klass : Class)]
+	[file (klass.getViewsFilename().concat('new.html.erb'), false, 'UTF-8')]
+		
+	[/file]
+[/template]
