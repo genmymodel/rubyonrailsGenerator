@@ -178,9 +178,10 @@
  * @param Class	klass
  */]
 [query public getJoinMigrationName(p : Property) :  String
-		= 'Joins' + 
-			p.class.name.toUpperFirst().pluralize() +
-			oppositeOf(p).name.toUpperFirst().pluralize() /]
+		= 'Create' + 
+			p.class.name.toUpperFirst() +
+			oppositeOf(p).name.toUpperFirst() +
+			'JoinTable' /]
 
 
 [**
@@ -197,3 +198,11 @@
 
 [query public timestamp(klass : Class) : String
 		= invoke('java.lang.System', 'currentTimeMillis().toString()', null) /]
+
+
+[**
+ * Return the right name for the join table name of the association
+ * @param p
+ */]
+[query public getJoinTableName(p : Property) :  String
+		= ''	/]

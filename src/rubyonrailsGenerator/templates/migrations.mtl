@@ -44,8 +44,24 @@ end
 
 [template public generateOneToOneJoinRMigration(p : Property)]
 	[file (p.getJoinMigrationFilename(), false, 'UTF-8')]
-class [p.getJoinMigrationFilename() /] < ActiveRecord::Migration
+[let models : OrderedSet(Property) = Sequence{p,p.oppositeOf()}->sortedBy('name')->asOrderedSet()]
+[for (p : Property | models) separator ('_')][p.class.name.pluralize() /][/for]
+class [p.getJoinMigrationName() /] < ActiveRecord::Migration
   def change
+	[let table_name : String = p.class.name]
+    add_column [table_name.pluralize().to_sym() /], [p.oppositeOf().class.name.concat('_id').to_sym() /], :integer		
+	[/let]
+  end
+end
+[/let]
+	[/file]
+[/template]
+
+[template public generateManyToManyJoinRMigration(p : Property)]
+	[file (p.getJoinMigrationFilename(), false, 'UTF-8')]
+class [p.getJoinMigrationName() /] < ActiveRecord::Migration
+  def change
+	create_table :assemblies_parts, :id => false do |t|
 	[let table_name : String = p.class.name]
     add_column [table_name.pluralize().to_sym() /], [p.oppositeOf().class.name.concat('_id').to_sym() /], :integer		
 	[/let]
