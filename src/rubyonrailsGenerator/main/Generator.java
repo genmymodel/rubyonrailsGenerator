@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.acceleo.engine.event.IAcceleoTextGenerationListener;
 import org.eclipse.acceleo.engine.generation.strategy.IAcceleoGenerationStrategy;
 import org.eclipse.acceleo.engine.service.AbstractAcceleoGenerator;
@@ -119,7 +120,7 @@ public class Generator extends AbstractAcceleoGenerator {
      * 
      * @param args
      *            Arguments of the generation.
-     * @generated
+     * @generated NOT
      */
     public static void main(String[] args) {
         try {
@@ -138,6 +139,8 @@ public class Generator extends AbstractAcceleoGenerator {
                  * revert your modifications.
                  */
 
+                AcceleoPreferences.switchQueryCache(false);
+                
                 /*
                  * Add in this list all the arguments used by the starting point of the generation
                  * If your main template is called on an element of your model and a String, you can
