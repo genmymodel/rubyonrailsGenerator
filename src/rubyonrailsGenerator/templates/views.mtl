@@ -5,7 +5,6 @@
 
 
 [template public generateViews(aModel : Model)]
-[comment @main/]
 [aModel.generateRViews()/]
 [/template]
 

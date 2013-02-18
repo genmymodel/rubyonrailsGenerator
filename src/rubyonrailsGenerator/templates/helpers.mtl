@@ -173,6 +173,14 @@
 
 
 [**
+ * Return the path for the routes file
+ * @param model
+ */]
+[query public getRoutesFilename(model : Model) :  String
+		= 'dist/config/routes.rb' /]
+
+
+[**
  * Return the right ruby name for the migration
  * @param Class	klass
  */]

@@ -5,6 +5,8 @@
 [import rubyonrailsGenerator::templates::entites_associations 	/]
 [import rubyonrailsGenerator::templates::migrations 			/]
 [import rubyonrailsGenerator::templates::controllers	 		/]
+[import rubyonrailsGenerator::templates::views 					/]
+[import rubyonrailsGenerator::templates::routes /]
 [import rubyonrailsGenerator::templates::assets 				/]
 
 [template public main(aModel : Model)]
@@ -12,5 +14,7 @@
 [aModel.generateEntitesAndAssociations()	/]
 [aModel.generateMigrations()	 			/]
 [aModel.generateControllers() 				/]
+[aModel.generateViews()		 				/]
+[aModel.generateRoutes()	 				/]
 [aModel.generateAssets() 					/]
 [/template]
