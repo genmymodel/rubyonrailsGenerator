@@ -10,8 +10,8 @@
 
 
 [template public generateMigrations(aModel : Model)]
-[aModel.packagedElement->filter(Class).generateRMigration() /]
-[aModel.generateJoinMigrations() /]
+[comment][aModel.packagedElement->filter(Class).generateRMigration() /][/comment]
+[aModel.packagedElement->filter(Association).generateJoinMigrations() /]
 [/template]
 
 
@@ -32,13 +32,29 @@ end
 [/template]
 
 
-[template public generateJoinMigrations(model : Model)]
-	[comment @main /]
-	[for (assoc : Association | model.packagedElement->filter(Association))]
-		[let p : Property = assoc.memberEnd->first() ]
+[template public generateJoinMigrations(assoc : Association)]
+	[let p : Property = assoc.memberEnd->first() ]
+		
+		[file ('tests.txt', false, 'MacRoman')]
+			p   		: [p.toString() /]
+			-|p   		: [p.oppositeOf().toString() /]
+			p_upper   	: [p.getUpper() /]
+			-|p_upper   : [p.oppositeOf().getUpper() /]
+			OTO : [isOneToOne(p, p.oppositeOf())/] 
+			MTM : [isManyToMany(p, p.oppositeOf())/]
+			OTM : [isOneToMany(p, p.oppositeOf())/]
+			MTO : [isManyToOne(p, p.oppositeOf())/]
+		[/file]
+		[if (isOneToOne(p, p.oppositeOf()))]
+			[p.generateOneToOneJoinRMigration()/]
+		[elseif (isManyToMany(p, p.oppositeOf()))]
 			[p.generateManyToManyJoinRMigration() /]
-		[/let]
-	[/for]
+		[elseif (isOneToMany(p, p.oppositeOf()))]
+			[p.oppositeOf().generateBelognsToJoinRMigration() /]
+		[elseif (isManyToOne(p, p.oppositeOf()))]
+			[p.generateBelognsToJoinRMigration() /]
+		[/if]
+	[/let]
 [/template]
 
 
@@ -72,6 +88,14 @@ end
 	[/file]
 [/template]
 
-[template public getJoinTableName(models : OrderedSet(Property))]
-	[for (p : Property | models) separator ('_')][p.class.name.pluralize().to_sym() /][/for]
+[template public generateBelognsToJoinRMigration(p : Property)]
+	[file (p.getJoinMigrationFilename(), false, 'UTF-8')]
+class [p.getJoinMigrationName() /] < ActiveRecord::Migration
+  def change
+	[let table_name : String = p.oppositeOf().class.name]
+    add_column [table_name.pluralize().to_sym() /], [p.class.name.concat('_id').to_sym() /], :integer		
+	[/let]
+  end
+end
+	[/file]
 [/template]

@@ -1,0 +1,8 @@
+			p   		: org.eclipse.uml2.uml.internal.impl.PropertyImpl@12948069 (name: duties, visibility: <unset>) (isLeaf: false) (isStatic: false) (isOrdered: false, isUnique: true, isReadOnly: false) (isDerived: false, isDerivedUnion: false, aggregation: none)
+			-|p   		: org.eclipse.uml2.uml.internal.impl.PropertyImpl@68fc8e75 (name: owner, visibility: <unset>) (isLeaf: false) (isStatic: false) (isOrdered: false, isUnique: true, isReadOnly: false) (isDerived: false, isDerivedUnion: false, aggregation: none)
+			p_upper   	: -1
+			-|p_upper   : 1
+			OTO : false 
+			MTM : false
+			OTM : false
+			MTO : true

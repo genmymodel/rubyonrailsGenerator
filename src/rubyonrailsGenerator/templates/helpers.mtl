@@ -56,7 +56,7 @@
  * @param pe	UML Class or Enumerable
  */]
 [query public getModelFilename(pe : PackageableElement) :  String
-		= 'app/models/' + 
+		= 'dist/app/models/' + 
 			pe.name
 				.underscore()
 				.concat('.rb')	/]
@@ -139,7 +139,7 @@
  * @param pe	UML Class or Enumerable
  */]
 [query public getControllerFilename(klass : Class) :  String
-		= 'app/controllers/' + 
+		= 'dist/app/controllers/' + 
 			klass.name.pluralize()
 				.underscore()
 				.concat('_controller.rb')	/]
@@ -151,7 +151,7 @@
  * @param pe	UML Class or Enumerable
  */]
 [query public getMigrationFilename(klass : Class) :  String
-		= 'db/migrate/' + 
+		= 'dist/db/migrate/' + 
 			klass.timestamp() + '_' +
 			klass.getMigrationName()
 				.underscore()
@@ -162,14 +162,14 @@
  * @param model
  */]
 [query public getAssetFilename(model : Model) :  String
-		= 'app/assets/stylesheets/' + model.name.underscore().concat('.scss') /]
+		= 'dist/app/assets/stylesheets/' + model.name.underscore().concat('.scss') /]
 
 [**
  * Return the path for the directory containing views for the given 'klass'
  * @param klass
  */]
 [query public getViewsFilename(klass : Class) :  String
-		= 'app/views/' + klass.name.pluralize().underscore().concat('/') /]
+		= 'dist/app/views/' + klass.name.pluralize().underscore().concat('/') /]
 
 
 [**
@@ -187,7 +187,7 @@
 [query public getJoinMigrationName(p : Property) :  String
 		= 'Create' + 
 			p.class.name.toUpperFirst() +
-			oppositeOf(p).name.toUpperFirst() +
+			oppositeOf(p).class.name.toUpperFirst() +
 			'JoinTable' /]
 
 
@@ -196,7 +196,7 @@
  * @param prop
  */]
 [query public getJoinMigrationFilename(prop : Property) :  String
-		= 'db/migrate/' + 
+		= 'dist/db/migrate/' + 
 			prop.class.timestamp() + '_' +
 			prop.getJoinMigrationName()
 				.underscore()

@@ -1,4 +1,0 @@
-		'abch' < 'aaofoh' => true
-
-			
-
