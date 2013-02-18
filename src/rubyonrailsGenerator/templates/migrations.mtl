@@ -10,7 +10,7 @@
 
 
 [template public generateMigrations(aModel : Model)]
-[comment][aModel.packagedElement->filter(Class).generateRMigration() /][/comment]
+[aModel.packagedElement->filter(Class).generateRMigration() /]
 [aModel.packagedElement->filter(Association).generateJoinMigrations() /]
 [/template]
 
@@ -34,17 +34,6 @@ end
 
 [template public generateJoinMigrations(assoc : Association)]
 	[let p : Property = assoc.memberEnd->first() ]
-		
-		[file ('tests.txt', false, 'MacRoman')]
-			p   		: [p.toString() /]
-			-|p   		: [p.oppositeOf().toString() /]
-			p_upper   	: [p.getUpper() /]
-			-|p_upper   : [p.oppositeOf().getUpper() /]
-			OTO : [isOneToOne(p, p.oppositeOf())/] 
-			MTM : [isManyToMany(p, p.oppositeOf())/]
-			OTM : [isOneToMany(p, p.oppositeOf())/]
-			MTO : [isManyToOne(p, p.oppositeOf())/]
-		[/file]
 		[if (isOneToOne(p, p.oppositeOf()))]
 			[p.generateOneToOneJoinRMigration()/]
 		[elseif (isManyToMany(p, p.oppositeOf()))]
