@@ -21,7 +21,7 @@
 
 [template public generateFormView(klass : Class)]
 	[file (klass.getViewsFilename().concat('_form.html.erb'), false, 'UTF-8')]
-		[let model_name : String = klass.name.toLower()]
+		[let model_name : String = klass.name.underscore()]
 <%= form_for(@[model_name /]) do |f| %>
   <% if @[model_name /].errors.any? %>
     <div id="error_explanation">
@@ -35,10 +35,11 @@
     </div>
   <% end %>
 
-	[for (attr : Property | klass.attribute) ? (not isClass() and not isEnum())]
-<div class="field">
-   
-</div>
+	[for (attr : Property | klass.attribute) ? (not isClass())]
+	<div class="field">
+	    <%= f.label [attr.name.to_sym() /] %><br />
+		[field_for(attr) /]
+	</div>
 	[/for]
   
   <div class="actions">
@@ -51,24 +52,95 @@
 
 [template public generateIndexView(klass : Class)]
 	[file (klass.getViewsFilename().concat('index.html.erb'), false, 'UTF-8')]
+[let _model : String = klass.name.underscore() ]
+<h1>Listing [_model.pluralize().toUpperFirst() /]</h1>
+
+<table>
+  <tr>
+	[for (attr : Property  | klass.attribute) ? (not isClass())]
+		<th>[attr.name.toUpperFirst() /]</th>
+	[/for]
+  </tr>
+
+<% @[_model.pluralize() /].each do |[_model /]| %>
+  <tr>
+	[for (attr : Property  | klass.attribute) ? (not isClass())]
+		<td><%= [_model.concat('.').concat(attr.name) /] %></td>
+	[/for]
+	
+	[comment :
+		Here we focus on Class attribute and whether we need to 
+		add a <attr_name>_id field for those whih are associated
+		to the main model.
+	 /]
+	[comment][for (attr : Property | klass.attribute) ? (isClass())]
 		
+	[/for][/comment]
+    <td><%= link_to 'Show', [_model /] %></td>
+    <td><%= link_to 'Edit', edit_[_model /]_path([_model /]) %></td>
+    <td><%= link_to 'Destroy', [_model /], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New [_model.toUpperFirst() /]', new_[klass.name.underscore()/]_path %>
+[/let]
 	[/file]
 [/template]
 
 [template public generateShowView(klass : Class)]
 	[file (klass.getViewsFilename().concat('show.html.erb'), false, 'UTF-8')]
-		
+<p id="notice"><%= notice %></p>
+[let _model : String = klass.name.underscore() ]
+[for (attr : Property | klass.attribute) ? (not isClass())]
+	<p>
+	  <b>[attr.name.toUpperFirst() /]:</b>
+	  <%= @[_model.concat('.').concat(attr.name) /] %>
+	</p>	
+[/for]
+
+<%= link_to 'Edit', edit_[klass.name.underscore()/]_path(@[_model/]) %> |
+<%= link_to 'Back', [klass.name.pluralize().underscore()/]_path %>
+[/let]
 	[/file]
 [/template]
 
 [template public generateEditView(klass : Class)]
 	[file (klass.getViewsFilename().concat('edit.html.erb'), false, 'UTF-8')]
-		
+[let _model : String = klass.name.underscore() ]
+<h1>Editing [_model/]</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Show', @[_model/] %> |
+<%= link_to 'Back', [klass.name.pluralize().underscore()/]_path %>
+[/let]		
 	[/file]
 [/template]
 
 [template public generateNewView(klass : Class)]
 	[file (klass.getViewsFilename().concat('new.html.erb'), false, 'UTF-8')]
-		
+[let _model : String = klass.name.underscore() ]
+<h1>New [_model/]</h1>
+
+<%= render 'form' %>
+
+<%= link_to 'Back', [klass.name.pluralize().underscore()/]_path %>		
+[/let]
 	[/file]
+[/template]
+
+
+[template public field_for(p : Property) post (trim())]
+[let tag_name : String = p.name.to_sym()]
+	[if (type.name.equalsIgnoreCase('integer') or p.isEnum())]
+<%= f.number_field [tag_name /] %>
+	[elseif (type.name.equalsIgnoreCase('boolean'))]
+<%= radio_button_tag([tag_name /], false) %>		
+	[else]
+<%= f.text_field [tag_name /] %>
+	[/if]
+[/let]
 [/template]
