@@ -47,7 +47,9 @@ end
 
 [template public generateMethodProtectedContent(op : Operation)]
  # [protected ('for <' + op.name + '> method')]
+
  # Insert your code logic here ...
+
  # [/protected]
 [/template]
 
