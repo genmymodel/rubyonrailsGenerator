@@ -83,7 +83,9 @@ ActiveRecord::Base
 
 [template public belongs_to(p : Property)]
 	[if (p.hasRole())]
-belongs_to [p.name.to_sym() /], :class_name => "[oppositeOf(p).class.name /]"
+belongs_to [p.name.to_sym() /], 
+			:class_name => "[oppositeOf(p).class.name /]", 
+			:foreign_key => "[oppositeOf(p).class.name.underscore() /]_id" 
 	[else]	
 belongs_to [p.name.to_sym() /]  
 	[/if]
@@ -91,7 +93,9 @@ belongs_to [p.name.to_sym() /]
 
 [template public has_many(p : Property)]
 	[if (p.hasRole())]
-has_many [p.name.to_sym() /], :class_name => "[oppositeOf(p).class.name /]" 
+has_many [p.name.to_sym() /], 
+			:class_name => "[oppositeOf(p).class.name /]",
+			:foreign_key => "[oppositeOf(p).class.name.underscore() /]_id" 
 	[else]	
 has_many [p.name.to_sym() /]  
 	[/if]
