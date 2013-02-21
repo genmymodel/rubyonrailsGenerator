@@ -10,8 +10,8 @@
  
 [aModel.packagedElement->filter(Class).generateModelRoute()/]
 
-#	==============================
-#	[protected ('routes')]  
+
+# [protected ('routes')]  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -70,9 +70,9 @@
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 end
+#
+# [/protected ] 
 
-#	[/protected] 
-#	==============================
 [/file]
 [/template]
 
