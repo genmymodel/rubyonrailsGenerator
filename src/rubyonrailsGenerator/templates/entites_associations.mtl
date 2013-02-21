@@ -33,12 +33,22 @@ end
 
 [template public generateMethod (op : Operation) ? (getReturnResult().type.name = 'Boolean') ]
 # [op.getDesc() /]
-def [op.name.concat('?') /] ;end
+def [op.name.concat('?') /] 
+  [op.generateMethodProtectedContent() /]
+end
 [/template]
 
 [template public generateMethod (op : Operation) ]
 # [op.getDesc() /]
-def [op.name /] ;end
+def [op.name /] 
+  [op.generateMethodProtectedContent() /]
+end
+[/template]
+
+[template public generateMethodProtectedContent(op : Operation)]
+ # [protected ('for <' + op.name + '> method')]
+ # Insert your code logic here ...
+ # [/protected]
 [/template]
 
 [template public generateOperations(klass : Class)]
