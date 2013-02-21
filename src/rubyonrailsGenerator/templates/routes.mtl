@@ -7,11 +7,16 @@
 
 [file (aModel.getRoutesFilename(), false, 'UTF-8')]
 [aModel.classify() /]::Application.routes.draw do
- 
-[aModel.packagedElement->filter(Class).generateModelRoute()/]
 
+  # >>>>>>>>>>>>>  Generated routes  >>>>>>>>>>>>>
+  [aModel.packagedElement->filter(Class).generateModelRoute()/]
 
-# [protected ('routes')]  
+  # <<<<<<<<<<<<<  Generated routes  <<<<<<<<<<<<<
+
+  # [protected ('routes')] 
+	
+  # [/protected ] 
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -70,12 +75,12 @@
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 end
-#
-# [/protected ] 
+
 
 [/file]
 [/template]
 
 [template public generateModelRoute (klass : Class) ]
-resources [klass.name.pluralize().underscore().to_sym() + '\n' /]
+
+resources [klass.name.pluralize().underscore().to_sym() /]
 [/template]

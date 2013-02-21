@@ -10,19 +10,28 @@
 
 
 [**
- * Check if an attribute is an enumeration
- * @param property	
+ * Return true if an attribute is an Enumaration 
+ * @param Property	
  */]
 [query public isEnum(property : Property) : Boolean 
 		= property.type.oclIsKindOf(Enumeration) /]
 
 
 [**
- * Return all attributes of the class except association member
- * @param klass	
+ * Return true if an attribute is a Class (association member) 
+ * @param p	
  */]
 [query public isClass(p : Property) : Boolean
 		= not p.association.name.oclIsUndefined() /]
+
+
+[**
+ * Return true if an attribute as a role in its association 
+ * @param klass	
+ */]
+[query public hasRole(p : Property) : Boolean
+		= p.name.toLower() <> p.class.name.toLower() /]
+
 
 
 [**
@@ -33,6 +42,7 @@
 		= pe.name	
 				.trim()
 				.toUpperFirst() /]
+
 
 
 [**

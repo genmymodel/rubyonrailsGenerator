@@ -21,7 +21,7 @@ class [klass.getMigrationName() /] < ActiveRecord::Migration
   def change
     create_table [klass.name.underscore().pluralize().to_sym() /] do |t|
 	  [for (attr : Property | klass.attribute) ? (not isClass() and not isEnum())]
-	  	t.[attr.type.name.toLower() /] [attr.name.to_sym() /] 
+	  t.[attr.type.name.toLower() /] :[attr.name /] 
 	  [/for]
 
       t.timestamps # To generate rails timestamp fields 

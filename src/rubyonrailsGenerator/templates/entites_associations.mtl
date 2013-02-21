@@ -54,9 +54,9 @@ def [op.name /] ;end
   	[comment "Issue because I don't know which value to set as primary key" /]
 has_one [p.name.to_sym() /]
     [elseif ( isOneToMany (p, oppositeOf(p)) )]
-belong_to [p.name.to_sym() /]
+[belongs_to(p)/]
 	[elseif ( isManyToOne (p, oppositeOf(p)) )]
-has_many [p.name.to_sym() /]
+[has_many(p) /]
 	[elseif ( isManyToMany(p, oppositeOf(p)) )]
 has_and_belongs_to_many [p.name.to_sym() /]
   	[/if]
@@ -80,4 +80,20 @@ ActiveRecord::Base
 [klass.general.name /]				
 	[/if]
 [/template] 
+
+[template public belongs_to(p : Property)]
+	[if (p.hasRole())]
+belongs_to [p.name.to_sym() /], :class_name => "[oppositeOf(p).class.name /]"
+	[else]	
+belongs_to [p.name.to_sym() /]  
+	[/if]
+[/template]
+
+[template public has_many(p : Property)]
+	[if (p.hasRole())]
+has_many [p.name.to_sym() /], :class_name => "[oppositeOf(p).class.name /]" 
+	[else]	
+has_many [p.name.to_sym() /]  
+	[/if]
+[/template]
 

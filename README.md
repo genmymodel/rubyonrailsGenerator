@@ -12,7 +12,8 @@
 ## Use
 In this section will see how to run the genrator and get back a fully fonctionnal application.
 
-
+## Naming conventions
+Naming conventions you must stick into to make your generated project as good as possible.
 
 ## Features
 
