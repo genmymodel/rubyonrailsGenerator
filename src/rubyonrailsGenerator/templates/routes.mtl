@@ -6,12 +6,12 @@
 [template public generateRoutes(aModel : Model)]
 
 [file (aModel.getRoutesFilename(), false, 'UTF-8')]
-FakeApp::Application.routes.draw do
+[aModel.classify() /]::Application.routes.draw do
  
 [aModel.packagedElement->filter(Class).generateModelRoute()/]
 
 #	==============================
-	[protected ('routes')]  
+#	[protected ('routes')]  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -71,11 +71,11 @@ FakeApp::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
 end
 
-	[/protected] 
+#	[/protected] 
 #	==============================
 [/file]
 [/template]
 
 [template public generateModelRoute (klass : Class) ]
-ressource [klass.name.pluralize().underscore().to_sym() + '\n' /]
+resources [klass.name.pluralize().underscore().to_sym() + '\n' /]
 [/template]

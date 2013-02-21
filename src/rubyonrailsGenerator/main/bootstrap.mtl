@@ -5,14 +5,14 @@
 
 [template public generateProject(model : Model)]
 [comment @main/]
-[file ('scripts/' + model.name.toLower() + '/Rakefile', false, 'UTF-8')]
+[file ('.' + model.name.underscore() + '/Rakefile', false, 'UTF-8')]
 #!/usr/bin/env rake
 
 namespace :app do 
 	
   desc "Creating the rails project directory"
   task :setup => ".template.rb" do 
-    sh "rails new [model.name.toLower() /] -m '.template.rb' "
+    sh "rails new [model.name.underscore() /] -m '.template.rb' "
   end	
 
 
