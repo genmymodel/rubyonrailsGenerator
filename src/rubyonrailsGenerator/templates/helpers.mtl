@@ -228,8 +228,13 @@
 
 
 [**
- * Return the right name for the join table name of the association
- * @param p
+ * Return the root route of from a given model 
+ * @param model
  */]
-[query public getJoinTableName(p : Property) :  String
-		= ''	/]
+[query public getRootRoute(model : Model) :  String
+		= let first : Class = model.packagedElement->filter(Class)->asSequence()->at(1) in
+		  if (first.oclIsUndefined()) then
+			''
+		  else 
+			'root :to => "' + first.name.pluralize().underscore() + '#index"'  
+		  endif /]

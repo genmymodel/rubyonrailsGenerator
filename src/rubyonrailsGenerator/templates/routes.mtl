@@ -10,7 +10,7 @@
 
   # >>>>>>>>>>>>>  Generated routes  >>>>>>>>>>>>>
 
-  [aModel.generateRootRoute() /]
+  [aModel.getRootRoute() /]
 
   [aModel.packagedElement->filter(Class).generateModelRoute()/]
 	
@@ -86,11 +86,4 @@ end
 [template public generateModelRoute (klass : Class) ]
 
 resources [klass.name.pluralize().underscore().to_sym() /]
-[/template]
-
-[template public generateRootRoute(model : Model)]
-	[let _controller_name : String = model.packagedElement->select(oclIsKindOf(Class))->asSequence()->at(1).name.pluralize().underscore()]
-  # Setup the main route
-  root :to => '[_controller_name/]#index'  
-	[/let]
 [/template]
