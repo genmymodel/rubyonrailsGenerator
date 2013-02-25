@@ -116,10 +116,33 @@ I'll try to details all then now.
  
  - A stylesheet [Sass](http://sass-lang.com/) file `task_manager.scss` has been generated to setup some default styles for your application.
  
-###### Step 6 (final): Run migration and start the server
+###### Step 6 (final): Run migration and Launch the application
 ---
-At this point we have all the rails application setup. However, we need frst the run our migrations to effectively create all enties and related associations 
+At this point we have all the rails application setup. However, we need first to run our migrations to effectively create all enties and related associations. Use this command:
+	
+	$ rake db:migrate
 
+And finally run the server to launch our application and have fun with it: 
+
+	$ rails s
+	
+## Feedback
+  
+  We would appreciate your feedback and your suggestions about this code generation
+  and GenMyModel. Tell us about the generator you always dream of and the one which would
+  help you.
+  
+  We are happy to answer any questions you may have, let us know if you have any time to talk. 
+
+  
+## Links
+
+What?			| Links
+------------ | ------------
+Home Page    | http://www.genmymodel.com
+Contact      | team@genmymodel.com  
+
+	         
 
 [1]: assets/run_config.png
 [2]: assets/task_manager.png
