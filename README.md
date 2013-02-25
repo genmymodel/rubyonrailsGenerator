@@ -11,7 +11,7 @@
 ## Requirements
 
 To run the project you should [download Eclipse modeling Tools](http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/indigosr2) and install the one that matched your operating system.
-Then, install Acceleo by opening eclipse and follow in the menu bar **Help > Install Modeling Components **.
+Then, install Acceleo by opening eclipse and follow in the menu bar **Help > Install Modeling Components**.
 
 
 ###### Windows OS
