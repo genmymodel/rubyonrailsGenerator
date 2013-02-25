@@ -8,19 +8,38 @@
 
 [to complete]
 
+## Requirements
 
-## Use
-In this section will see how to run the genrator and get back a fully fonctionnal application.
+To run the project you should [download Eclipse modeling Tools](http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/indigosr2) and install the one that matched your operating system.
+Then, install Acceleo by opening eclipse and follow in the menu bar **Help > Install Modeling Components **.
 
-## Naming conventions
+
+###### Windows OS
+[ToDo :p]
+
+###### Unix Operating system (Linux/ Mac OSX)
+
+* Install **rvm** and **Ruby 1.9.3**
+
+```
+$ rvm install 1.9.3  # To install ruby 1.9.3 lastest version 
+$ rvm default 1.9.3  # To set this version of ruby as the default one 
+```
+* Installing **rails 3.2** 
+
+```
+$ gem install rails  # Install Ruby On Rails and Rake commandline tool
+```
+
+
+## Naming conventions 
 Naming conventions you must stick into to make your generated project as good as possible.
+
 
 ## Features
 
-
 That the list of features the rubyOnRails generator is able to take into consideration in the generating process.
 
-✔✘
 ### UML2 specification
 According to the specification, that's the list of elements 
 
@@ -38,6 +57,17 @@ According to the specification, that's the list of elements
 * [✔] One to many:
 * [✔] Many to Many:
 
+### Rails
+Rails features that the generator can handle.
+
+* [✔] ~~Generating models from UML Classes~~
+* [✔] ~~Generating controllers~~
+* [✔] ~~Generating views~~
+* [✔] ~~Generating application routes~~
+* [✔] ~~Migration files for every entities and their related associations~~
+* [✘] Handling models associations in views (pending)
+
+
 ## Tutorial: Generate Task Manager Rails Application
 
 In this tutorial we will follow all step to generate the project using the Acceleo generator project.
@@ -46,11 +76,6 @@ In this tutorial we will follow all step to generate the project using the Accel
 ![Task manager UML diagram][3]
 
 We will use the generator to create a CRUD Rails application from this UML model.
-
-###### Requirements
----
-To run the project you should [download Eclipse modeling Tools](http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/indigosr2) and install the one that matched your operating system.
-Then, install Acceleo by opening eclipse and follow in the menu bar **Help > Install Modeling Components **.
 
 
 ###### Step 1: Cloning the Acceleo generator project
