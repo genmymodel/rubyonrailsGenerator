@@ -19,10 +19,8 @@
 	[file (getModelFilename(klass) , false, 'UTF-8')]
 class [klass.classify() /]  < [klass.superKlass() /]
 
-  # Attributes
-  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (not isClass()) ]:[attr.name/][/for]
-
-  # Associations
+  [klass.generateAttributes() /]
+  
   [klass.generateAssociations()/]
 
   [klass.generateOperations()/]
@@ -31,11 +29,17 @@ end
 	[/file]
 [/template]
 
+[template public generateAttributes(klass : Class) ? (not hasSuper())]
+  # Attributes
+  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (not isClass()) ]:[attr.name/][/for]	
+[/template]
+
 [template public generateMethod (op : Operation) ? (getReturnResult().type.name = 'Boolean') ]
 # [op.getDesc() /]
 def [op.name.concat('?') /] 
   [op.generateMethodProtectedContent() /]
 end
+
 [/template]
 
 [template public generateMethod (op : Operation) ]
@@ -43,6 +47,7 @@ end
 def [op.name /] 
   [op.generateMethodProtectedContent() /]
 end
+
 [/template]
 
 [template public generateMethodProtectedContent(op : Operation)]
@@ -56,22 +61,17 @@ end
 [template public generateOperations(klass : Class)]
 [for (op : Operation | klass.getAllOperations()->select(visibility = VisibilityKind::public))]
 [generateMethod(op)/]
-
 [/for]
-
-[for (op : Operation | klass.getAllOperations()->select(visibility = VisibilityKind::protected))before ('protected \n\n')]
+[for (op : Operation | klass.getAllOperations()->select(visibility = VisibilityKind::protected))before ('\nprotected \n\n')]
 [generateMethod(op)/]
-
 [/for]
-
-[for (op : Operation | klass.getAllOperations()->select(visibility = VisibilityKind::private))before ('private \n\n')]
+[for (op : Operation | klass.getAllOperations()->select(visibility = VisibilityKind::private))before ('\nprivate \n\n')]
 [generateMethod(op)/]
-
 [/for]
-
 [/template]
 
 [template public generateAssociations (klass : Class)]
+# Associations
 [for (p : Property | klass.attribute) ? (isClass()) ]
   	[if 	( isOneToOne  (p, oppositeOf(p)) )]
   	[comment "Issue because I don't know which value to set as primary key" /]
