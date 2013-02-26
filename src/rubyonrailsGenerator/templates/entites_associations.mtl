@@ -54,10 +54,21 @@ end
 [/template]
 
 [template public generateOperations(klass : Class)]
-[for (op : Operation | klass.getAllOperations())]
+[for (op : Operation | klass.getAllOperations()->select(visibility = VisibilityKind::public))]
 [generateMethod(op)/]
 
 [/for]
+
+[for (op : Operation | klass.getAllOperations()->select(visibility = VisibilityKind::protected))before ('protected \n\n')]
+[generateMethod(op)/]
+
+[/for]
+
+[for (op : Operation | klass.getAllOperations()->select(visibility = VisibilityKind::private))before ('private \n\n')]
+[generateMethod(op)/]
+
+[/for]
+
 [/template]
 
 [template public generateAssociations (klass : Class)]

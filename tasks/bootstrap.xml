@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project default="bootstrap" name="rubyonrailsGenerator">
-    <property name="ECLIPSE_HOME" value="../../../../../../../../Applications/eclipse"/>
+    <property name="ECLIPSE_HOME" value="../../../../../../Softwares/eclipse"/>
     <property name="ECLIPSE_WORKSPACE" value="../.."/>
 
     <!-- The classpath with only the dependencies used by the project -->
