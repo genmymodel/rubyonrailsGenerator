@@ -20,7 +20,7 @@
 class [klass.classify() /]  < [klass.superKlass() /]
 
   # Attributes
-  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (not isClass()) ][attr.name.to_sym()/][/for]
+  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (not isClass()) ]:[attr.name/][/for]
 
   # Associations
   [klass.generateAssociations()/]

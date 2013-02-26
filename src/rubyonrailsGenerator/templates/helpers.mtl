@@ -33,6 +33,14 @@
 		= p.name.toLower() <> p.class.name.toLower() /]
 
 
+[**
+ * Return true if an attribute as a role in its association 
+ * @param klass	
+ */]
+[query public hasSuper(klass : Class) : Boolean
+		= not klass.general.name->isEmpty() /]
+
+
 
 [**
  * Return the ruby class name from Rails naming conventions
