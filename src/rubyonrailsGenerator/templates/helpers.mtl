@@ -26,6 +26,14 @@
 
 
 [**
+ * Return true if an attribute is a Class (association member) 
+ * @param p	
+ */]
+[query public isNeitherClassNorEnum(p : Property) : Boolean
+		= not p.isClass() and not p.isEnum() /]
+
+
+[**
  * Return true if an attribute as a role in its association 
  * @param klass	
  */]
@@ -34,7 +42,7 @@
 
 
 [**
- * Return true if an attribute as a role in its association 
+ * Return true if a class has a super Class 
  * @param klass	
  */]
 [query public hasSuper(klass : Class) : Boolean

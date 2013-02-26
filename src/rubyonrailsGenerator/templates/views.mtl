@@ -36,14 +36,14 @@
   <% end %>
 
 	[if (klass.hasSuper())]
-		[for (attr : Property | klass.general.attribute) ? (not isClass())]
+		[for (attr : Property | klass.general.attribute) ? (isNeitherClassNorEnum())]
 	<div class="field">
 	    <%= f.label :[attr.name/] %><br />
 		[field_for(attr) /]
 	</div>
 		[/for]	
 	[else]
-		[for (attr : Property | klass.attribute) ? (not isClass())]
+		[for (attr : Property | klass.attribute) ? (isNeitherClassNorEnum())]
 	<div class="field">
 	    <%= f.label :[attr.name/] %><br />
 		[field_for(attr) /]
@@ -69,11 +69,11 @@
 <table>
   <tr>
 	[if (klass.hasSuper())]
-		[for (attr : Property  | klass.general.attribute) ? (not isClass())]
+		[for (attr : Property  | klass.general.attribute) ? (isNeitherClassNorEnum())]
 	<th>[attr.name.toUpperFirst() /]</th>
 		[/for]
 	[else]
-		[for (attr : Property  | klass.attribute) ? (not isClass())]
+		[for (attr : Property  | klass.attribute) ? (isNeitherClassNorEnum())]
 	<th>[attr.name.toUpperFirst() /]</th>
 		[/for]
 	[/if]
@@ -85,11 +85,11 @@
 <% @[_model.pluralize().underscore() /].each do |[_model.underscore() /]| %>
   <tr>
 	[if (klass.hasSuper())]
-		[for (attr : Property  | klass.general.attribute) ? (not isClass())]
+		[for (attr : Property  | klass.general.attribute) ? (isNeitherClassNorEnum())]
 	<td><%= [_model.underscore().concat('.').concat(attr.name) /] %></td>
 		[/for]
 	[else]
-		[for (attr : Property  | klass.attribute) ? (not isClass())]
+		[for (attr : Property  | klass.attribute) ? (isNeitherClassNorEnum())]
 	<td><%= [_model.underscore().concat('.').concat(attr.name) /] %></td>
 		[/for]
 	[/if]
@@ -121,14 +121,14 @@
 <p id="notice"><%= notice %></p>
 [let _model : String = klass.name ]
 	[if (klass.hasSuper())]
-		[for (attr : Property | klass.general.attribute) ? (not isClass())]
+		[for (attr : Property | klass.general.attribute) ? (isNeitherClassNorEnum())]
 	<p>
 	  <b>[attr.name.toUpperFirst() /]:</b>
 	  <%= @[_model.underscore().concat('.').concat(attr.name) /] %>
 	</p>	
 		[/for]
 	[else]
-		[for (attr : Property | klass.attribute) ? (not isClass())]
+		[for (attr : Property | klass.attribute) ? (isNeitherClassNorEnum())]
 	<p>
 	  <b>[attr.name.toUpperFirst() /]:</b>
 	  <%= @[_model.underscore().concat('.').concat(attr.name) /] %>

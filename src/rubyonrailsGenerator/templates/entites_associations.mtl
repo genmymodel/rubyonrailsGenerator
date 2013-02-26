@@ -31,7 +31,7 @@ end
 
 [template public generateAttributes(klass : Class) ? (not hasSuper())]
   # Attributes
-  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (not isClass()) ]:[attr.name/][/for]	
+  attr_accessible [for (attr : Property | klass.attribute) separator (', ') ? (isNeitherClassNorEnum()) ]:[attr.name/][/for]	
 [/template]
 
 [template public generateMethod (op : Operation) ? (getReturnResult().type.name = 'Boolean') ]
