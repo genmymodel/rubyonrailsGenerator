@@ -35,12 +35,23 @@
     </div>
   <% end %>
 
-	[for (attr : Property | klass.attribute) ? (not isClass())]
+	[if (klass.hasSuper())]
+		[for (attr : Property | klass.general.attribute) ? (not isClass())]
 	<div class="field">
 	    <%= f.label :[attr.name/] %><br />
 		[field_for(attr) /]
 	</div>
-	[/for]
+		[/for]	
+	[else]
+		[for (attr : Property | klass.attribute) ? (not isClass())]
+	<div class="field">
+	    <%= f.label :[attr.name/] %><br />
+		[field_for(attr) /]
+	</div>
+		[/for]
+	[/if]
+
+	
   
   <div class="actions">
     <%= f.submit %>
@@ -57,9 +68,15 @@
 
 <table>
   <tr>
-	[for (attr : Property  | klass.attribute) ? (not isClass())]
+	[if (klass.hasSuper())]
+		[for (attr : Property  | klass.general.attribute) ? (not isClass())]
 	<th>[attr.name.toUpperFirst() /]</th>
-	[/for]
+		[/for]
+	[else]
+		[for (attr : Property  | klass.attribute) ? (not isClass())]
+	<th>[attr.name.toUpperFirst() /]</th>
+		[/for]
+	[/if]
 	<th></th>
 	<th></th>
 	<th></th>
@@ -67,10 +84,16 @@
 
 <% @[_model.pluralize().underscore() /].each do |[_model.underscore() /]| %>
   <tr>
-	[for (attr : Property  | klass.attribute) ? (not isClass())]
-		<td><%= [_model.underscore().concat('.').concat(attr.name) /] %></td>
-	[/for]
-	
+	[if (klass.hasSuper())]
+		[for (attr : Property  | klass.general.attribute) ? (not isClass())]
+	<td><%= [_model.underscore().concat('.').concat(attr.name) /] %></td>
+		[/for]
+	[else]
+		[for (attr : Property  | klass.attribute) ? (not isClass())]
+	<td><%= [_model.underscore().concat('.').concat(attr.name) /] %></td>
+		[/for]
+	[/if]
+
 	[comment :
 		Here we focus on Class attribute and whether we need to 
 		add a <attr_name>_id field for those whih are associated
@@ -97,12 +120,22 @@
 	[file (klass.getViewsFilename().concat('show.html.erb'), false, 'UTF-8')]
 <p id="notice"><%= notice %></p>
 [let _model : String = klass.name ]
-[for (attr : Property | klass.attribute) ? (not isClass())]
+	[if (klass.hasSuper())]
+		[for (attr : Property | klass.general.attribute) ? (not isClass())]
 	<p>
 	  <b>[attr.name.toUpperFirst() /]:</b>
 	  <%= @[_model.underscore().concat('.').concat(attr.name) /] %>
 	</p>	
-[/for]
+		[/for]
+	[else]
+		[for (attr : Property | klass.attribute) ? (not isClass())]
+	<p>
+	  <b>[attr.name.toUpperFirst() /]:</b>
+	  <%= @[_model.underscore().concat('.').concat(attr.name) /] %>
+	</p>	
+		[/for]
+	[/if]
+
 
 <%= link_to 'Edit', edit_[_model.underscore()/]_path(@[_model.underscore()/]) %> |
 <%= link_to 'Back', [_model.pluralize().underscore()/]_path %>
