@@ -23,7 +23,7 @@
 [template public generateFormView(klass : Class)]
 	[file (klass.getViewsFilename().concat('_form.html.erb'), false, 'UTF-8')]
 		[let model_name : String = klass.name]
-<%= form_for(@[model_name.underscore() /], :class=>"form-horizontal") do |f| %>
+<%= form_for(@[model_name.underscore() /]) do |f| %>
   <% if @[model_name.underscore() /].errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@[model_name.underscore() /].errors.count, "error") %> prohibited this [model_name /] from being saved:</h2>
@@ -39,14 +39,12 @@
 	[if (klass.hasSuper())]
 		[for (attr : Property | klass.general.attribute) ? (isNeitherClassNorEnum())]
 	<div class="field control-group">
-	    <%= f.label :[attr.name/], :class=>'control-label' %>
 		[field_for(attr) /]
 	</div>
 		[/for]	
 	[else]
 		[for (attr : Property | klass.attribute) ? (isNeitherClassNorEnum())]
 	<div class="field control-group">
-	     <%= f.label :[attr.name/], :class=>'control-label' %><br />
 		[field_for(attr) /]
 	</div>
 		[/for]
@@ -56,7 +54,7 @@
   
   <div class="actions control-group">
     <div class="controls">
-    <%= f.submit "Create", :class => 'btn'%>
+    <%= f.submit :class => 'btn' %>
 	</div>
   </div>
 <% end %>
@@ -67,9 +65,12 @@
 [template public generateIndexView(klass : Class)]
 	[file (klass.getViewsFilename().concat('index.html.erb'), false, 'UTF-8')]
 [let _model : String = klass.name ]
+<div class="page-header">
 <h1>Listing [_model.pluralize().toUpperFirst() /]</h1>
+</div>
 
-<table class="table">
+
+<table class="table table-bordered table-striped table-condensed">
   <tr>
 	[if (klass.hasSuper())]
 		[for (attr : Property  | klass.general.attribute) ? (isNeitherClassNorEnum())]
@@ -80,9 +81,7 @@
 	<th>[attr.name.toUpperFirst() /]</th>
 		[/for]
 	[/if]
-	<th style="width:10%"></th>
-	<th style="width:10%">Actions</th>
-	<th style="width:10%"></th>
+	<th colspan="3" class="action">Actions</th>
   </tr>
 
 <% @[_model.pluralize().underscore() /].each do |[_model.underscore() /]| %>
@@ -113,7 +112,7 @@
 </table>
 
 <br />
-
+<hr>
 <%= link_to 'New [_model.toUpperFirst() /]', new_[klass.name.underscore()/]_path, :class => 'btn' %>
 [/let]
 	[/file]
@@ -139,7 +138,7 @@
 		[/for]
 	[/if]
 
-
+<hr>
 <%= link_to 'Edit', edit_[_model.underscore()/]_path(@[_model.underscore()/]), :class => 'btn btn-primary' %> |
 <%= link_to 'Back', [_model.pluralize().underscore()/]_path, :class => 'btn btn-inverse' %>
 [/let]
@@ -149,7 +148,9 @@
 [template public generateEditView(klass : Class)]
 	[file (klass.getViewsFilename().concat('edit.html.erb'), false, 'UTF-8')]
 [let _model : String = klass.name ]
+<div class="page-header">
 <h1>Editing [_model.toUpperFirst()/]</h1>
+</div>
 
 <%= render 'form' %>
 
@@ -162,10 +163,11 @@
 [template public generateNewView(klass : Class)]
 	[file (klass.getViewsFilename().concat('new.html.erb'), false, 'UTF-8')]
 [let _model : String = klass.name ]
+<div class="page-header">
 <h1>New [_model.toUpperFirst()/]</h1>
-
+</div>
 <%= render 'form' %>
-
+<hr>
 <%= link_to 'Back', [_model.pluralize().underscore()/]_path, :class => 'btn btn-inverse' %>		
 [/let]
 	[/file]
@@ -182,7 +184,9 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+<div class="hero-unit">
+	<h1>[model.name /]<h1/>
+</div>
 <div class="container">
 	<%= yield %>
 </div>
@@ -197,12 +201,16 @@
 <div class="controls">
 [let tag_name : String = ':' + p.name]
 	[if (type.name.equalsIgnoreCase('integer') or p.isEnum())]
+<%= f.label :[p.name/], :class=>'control-label' %>
 <%= f.number_field [tag_name /] %>
 	[elseif (type.name.equalsIgnoreCase('boolean'))]
-<%= radio_button_tag([tag_name /], false, :class =>'radio') %>		
+<label class="checkbox">
+	<%= f.check_box(:[p.name/])	%> [p.name/]
+</label>
 	[else]
+<%= f.label :[p.name/], :class=>'control-label' %>
 <%= f.text_field [tag_name /] %>
 	[/if]
 [/let]
-<div class="controls">
+</div>
 [/template]

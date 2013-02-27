@@ -1,23 +1,15 @@
-[comment encoding = UTF-8 /]
-[module bootstrap('http://www.eclipse.org/uml2/3.0.0/UML')]
-
-[import rubyonrailsGenerator::templates::helpers /]
-
-[template public generateProject(model : Model)]
-[comment @main/]
-[file ('Rakefile', false, 'UTF-8')]
 #!/usr/bin/env rake
 
 namespace :app do  
 	
   desc "Creating the rails project directory"
   task :setup => ".template.rb" do 
-    sh "rails new [model.name.underscore() /] -m '.template.rb' "
+    sh "rails new task_manager -m '.template.rb' "
   end	
 
   desc "Deleting public/ folder to enable routes"
   task :clean => :setup do 
-    sh "rm -Rf [model.name.underscore() /]/public"
+    sh "rm -Rf task_manager/public"
   end	
 
   desc "Generate the template for the script"
@@ -33,5 +25,3 @@ namespace :app do
 end
 
 task :default => "app:clean"
-[/file]
-[/template]
