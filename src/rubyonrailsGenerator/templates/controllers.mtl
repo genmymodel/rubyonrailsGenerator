@@ -85,7 +85,7 @@ class [_model.pluralize().toUpperFirst()/]Controller < ApplicationController
     @[_model.underscore() /].destroy
 
     respond_to do |format|
-      format.html { redirect_to [_model.underscore() /]_url }
+      format.html { redirect_to [_model.pluralize().underscore() /]_url }
       format.json { head :no_content }
     end
   end
