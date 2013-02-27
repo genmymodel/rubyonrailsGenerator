@@ -10,7 +10,7 @@
 
 
 [template public generateMigrations(aModel : Model)]
-[aModel.packagedElement->filter(Class).generateRMigration() /]
+[aModel.packagedElement->filter(Class)->select(not hasSuper()).generateRMigration() /]
 [aModel.packagedElement->filter(Association).generateJoinMigrations() /]
 [/template]
 

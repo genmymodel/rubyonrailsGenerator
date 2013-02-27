@@ -26,11 +26,27 @@
 
 
 [**
+ * Return true if an attribute is a Class (association member) 
+ * @param p	
+ */]
+[query public isNeitherClassNorEnum(p : Property) : Boolean
+		= not p.isClass() and not p.isEnum() /]
+
+
+[**
  * Return true if an attribute as a role in its association 
  * @param klass	
  */]
 [query public hasRole(p : Property) : Boolean
 		= p.name.toLower() <> p.class.name.toLower() /]
+
+
+[**
+ * Return true if a class has a super Class 
+ * @param klass	
+ */]
+[query public hasSuper(klass : Class) : Boolean
+		= not klass.general.name->isEmpty() /]
 
 
 
@@ -182,6 +198,15 @@
  */]
 [query public getViewsFilename(klass : Class) :  String
 		= 'app/views/' + klass.name.pluralize().underscore().concat('/') /]
+
+
+[**
+ * Return the path for the directory containing layouts for views 
+ * @param model
+ */]
+[query public getLayoutsFilename(model : Model) :  String
+		= 'app/views/layouts/application.html.erb' /]
+
 
 
 [**
