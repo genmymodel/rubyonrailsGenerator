@@ -5,7 +5,6 @@
 
 
 [template public generateViews(aModel : Model)]
-[aModel.generateApplicationLayout() /]
 [aModel.generateRViews()/]
 [/template]
 
@@ -23,7 +22,7 @@
 [template public generateFormView(klass : Class)]
 	[file (klass.getViewsFilename().concat('_form.html.erb'), false, 'UTF-8')]
 		[let model_name : String = klass.name]
-<%= form_for(@[model_name.underscore() /], :class=>"form-horizontal") do |f| %>
+<%= form_for(@[model_name.underscore() /]) do |f| %>
   <% if @[model_name.underscore() /].errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@[model_name.underscore() /].errors.count, "error") %> prohibited this [model_name /] from being saved:</h2>
@@ -38,15 +37,15 @@
 
 	[if (klass.hasSuper())]
 		[for (attr : Property | klass.general.attribute) ? (isNeitherClassNorEnum())]
-	<div class="field control-group">
-	    <%= f.label :[attr.name/], :class=>'control-label' %>
+	<div class="field">
+	    <%= f.label :[attr.name/] %><br />
 		[field_for(attr) /]
 	</div>
 		[/for]	
 	[else]
 		[for (attr : Property | klass.attribute) ? (isNeitherClassNorEnum())]
-	<div class="field control-group">
-	     <%= f.label :[attr.name/], :class=>'control-label' %><br />
+	<div class="field">
+	    <%= f.label :[attr.name/] %><br />
 		[field_for(attr) /]
 	</div>
 		[/for]
@@ -54,10 +53,8 @@
 
 	
   
-  <div class="actions control-group">
-    <div class="controls">
-    <%= f.submit "Create", :class => 'btn'%>
-	</div>
+  <div class="actions">
+    <%= f.submit %>
   </div>
 <% end %>
 		[/let]
@@ -69,7 +66,7 @@
 [let _model : String = klass.name ]
 <h1>Listing [_model.pluralize().toUpperFirst() /]</h1>
 
-<table class="table">
+<table>
   <tr>
 	[if (klass.hasSuper())]
 		[for (attr : Property  | klass.general.attribute) ? (isNeitherClassNorEnum())]
@@ -80,9 +77,9 @@
 	<th>[attr.name.toUpperFirst() /]</th>
 		[/for]
 	[/if]
-	<th style="width:10%"></th>
-	<th style="width:10%">Actions</th>
-	<th style="width:10%"></th>
+	<th></th>
+	<th></th>
+	<th></th>
   </tr>
 
 <% @[_model.pluralize().underscore() /].each do |[_model.underscore() /]| %>
@@ -105,16 +102,16 @@
 	[comment][for (attr : Property | klass.attribute) ? (isClass())]
 		
 	[/for][/comment]
-    <td><%= link_to 'Show', [_model.underscore() /], :class => 'btn' %></td>
-    <td><%= link_to 'Edit', edit_[_model.underscore() /]_path([_model.underscore() /]), :class => 'btn btn-primary' %></td>
-    <td><%= link_to 'Destroy', [_model.underscore() /], :class => 'btn btn-danger',  method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Show', [_model.underscore() /] %></td>
+    <td><%= link_to 'Edit', edit_[_model.underscore() /]_path([_model.underscore() /]) %></td>
+    <td><%= link_to 'Destroy', [_model.underscore() /], method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New [_model.toUpperFirst() /]', new_[klass.name.underscore()/]_path, :class => 'btn' %>
+<%= link_to 'New [_model.toUpperFirst() /]', new_[klass.name.underscore()/]_path %>
 [/let]
 	[/file]
 [/template]
@@ -140,8 +137,8 @@
 	[/if]
 
 
-<%= link_to 'Edit', edit_[_model.underscore()/]_path(@[_model.underscore()/]), :class => 'btn btn-primary' %> |
-<%= link_to 'Back', [_model.pluralize().underscore()/]_path, :class => 'btn btn-inverse' %>
+<%= link_to 'Edit', edit_[_model.underscore()/]_path(@[_model.underscore()/]) %> |
+<%= link_to 'Back', [_model.pluralize().underscore()/]_path %>
 [/let]
 	[/file]
 [/template]
@@ -153,8 +150,8 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @[_model.underscore()/], :class => 'btn' %> |
-<%= link_to 'Back', [_model.pluralize().underscore()/]_path, :class => 'btn btn-inverse' %>
+<%= link_to 'Show', @[_model.underscore()/] %> |
+<%= link_to 'Back', [_model.pluralize().underscore()/]_path %>
 [/let]		
 	[/file]
 [/template]
@@ -166,49 +163,20 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Back', [_model.pluralize().underscore()/]_path, :class => 'btn btn-inverse' %>		
+<%= link_to 'Back', [_model.pluralize().underscore()/]_path %>		
 [/let]
-	[/file]
-[/template]
-
-[template public generateApplicationLayout(model : Model)]
-	[file (model.getLayoutsFilename(), false, 'UTF-8')]
-<!--
-[protected ('for ' + model.name + ' application layout')]
--->
-<!DOCTYPE html>
-<html>
-<head>
-  <title>[model.name /]</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-
-<div class="container">
-	<%= yield %>
-</div>
-
-</body>
-</html>
-<!--
-[/protected]
--->
 	[/file]
 [/template]
 
 
 [template public field_for(p : Property) post (trim())]
-<div class="controls">
 [let tag_name : String = ':' + p.name]
 	[if (type.name.equalsIgnoreCase('integer') or p.isEnum())]
 <%= f.number_field [tag_name /] %>
 	[elseif (type.name.equalsIgnoreCase('boolean'))]
-<%= radio_button_tag([tag_name /], false, :class =>'radio') %>		
+<%= radio_button_tag([tag_name /], false) %>		
 	[else]
 <%= f.text_field [tag_name /] %>
 	[/if]
 [/let]
-<div class="controls">
 [/template]

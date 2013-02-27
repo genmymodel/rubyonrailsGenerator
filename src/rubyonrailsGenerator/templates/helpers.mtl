@@ -201,15 +201,6 @@
 
 
 [**
- * Return the path for the directory containing layouts for views 
- * @param model
- */]
-[query public getLayoutsFilename(model : Model) :  String
-		= 'app/views/layouts/application.html.erb' /]
-
-
-
-[**
  * Return the path for the routes file
  * @param model
  */]
