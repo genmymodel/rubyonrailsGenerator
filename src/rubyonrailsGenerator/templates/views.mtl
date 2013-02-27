@@ -50,7 +50,14 @@
 		[/for]
 	[/if]
 
-	
+	[for (p : Property | klass.attribute) ? (isClass())]
+		[if ((isOneToMany(p, p.oppositeOf())))]
+	<div class="field control-group">
+		<%= f.label :[p.name/], :class=>'control-label' %>
+		<%= collection_select([p.name.to_sym() /], [p.name.to_sym() /]_id, [p.type.name /].all, :id, :id, :prompt => 'Please select [p.name/]') %>
+	</div>
+		[/if]
+	[/for]
   
   <div class="actions control-group">
     <div class="controls">
