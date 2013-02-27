@@ -17,7 +17,6 @@
 
 [template public generateRMigration(klass : Class)]
 	[file (klass.getMigrationFilename(), false, 'UTF-8')]
-super : [klass.general.name /]
 class [klass.getMigrationName() /] < ActiveRecord::Migration
   def change
     create_table [klass.name.underscore().pluralize().to_sym() /] do |t|

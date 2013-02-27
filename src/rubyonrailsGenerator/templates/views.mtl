@@ -173,9 +173,6 @@
 
 [template public generateApplicationLayout(model : Model)]
 	[file (model.getLayoutsFilename(), false, 'UTF-8')]
-<!--
-[protected ('for ' + model.name + ' application layout')]
--->
 <!DOCTYPE html>
 <html>
 <head>
@@ -192,9 +189,6 @@
 
 </body>
 </html>
-<!--
-[/protected]
--->
 	[/file]
 [/template]
 

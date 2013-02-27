@@ -350,14 +350,16 @@ public class Generator extends AbstractAcceleoGenerator {
             resourceSet.getPackageRegistry().put(org.eclipse.uml2.uml.UMLPackage.eINSTANCE.getNsURI(), org.eclipse.uml2.uml.UMLPackage.eINSTANCE);
         }
         
+
         resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
         
         Map<URI,URI> uriMap = resourceSet.getURIConverter().getURIMap();  
-        URI uri = URI.createURI("jar:file:/Applications/eclipse/plugins/org.eclipse.uml2.uml.resources_3.1.100.v201008191510.jar!/");
+        URI uri = URI.createURI("jar:file:/Users/firstdeveloper/Softwares/eclipse/plugins/org.eclipse.uml2.uml.resources_3.1.100.v201008191510.jar!/");
 
         uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri.appendSegment("libraries").appendSegment(""));
         uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri.appendSegment("metamodels").appendSegment(""));
         uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri.appendSegment("profiles").appendSegment(""));
+        
         
         /*
          * If you want to change the content of this method, do NOT forget to change the "@generated"
@@ -397,7 +399,7 @@ public class Generator extends AbstractAcceleoGenerator {
      * 
      * @param resourceSet
      *            The resource set which registry has to be updated.
-     * @generated 
+     * @generated
      */
     @Override
     public void registerResourceFactories(ResourceSet resourceSet) {
