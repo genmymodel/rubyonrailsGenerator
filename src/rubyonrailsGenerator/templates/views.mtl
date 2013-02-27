@@ -160,7 +160,7 @@
 </div>
 
 <%= render 'form' %>
-
+<hr>
 <%= link_to 'Show', @[_model.underscore()/], :class => 'btn' %> |
 <%= link_to 'Back', [_model.pluralize().underscore()/]_path, :class => 'btn btn-inverse' %>
 [/let]		
@@ -191,8 +191,24 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class="hero-unit">
-	<h1>[model.name /]<h1/>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="brand" href="#">[model.name/]</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+		 	[for (klass : Class | model.packagedElement->filter(Class))]
+		  <li><%= link_to "[klass.name.pluralize()/]", [klass.name.pluralize().underscore()/]_path %></li>
+		 	[/for]
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
 </div>
 <div class="container">
 	<%= yield %>
