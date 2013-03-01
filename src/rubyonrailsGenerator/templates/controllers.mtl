@@ -1,0 +1,96 @@
+[comment encoding = UTF-8 /]
+[module controllers('http://www.eclipse.org/uml2/3.0.0/UML')]
+
+[import rubyonrailsGenerator::templates::helpers /]
+
+[** 
+  	=================================================================			  
+  				CONTROLLERS TEMPLATES   
+	=================================================================
+*/]
+
+
+[template public generateControllers(aModel : Model)]
+[aModel.packagedElement->filter(Class).generateRController() /]
+[/template]
+
+[template public generateRController (klass : Class) ]
+	[file (klass.getControllerFilename(), false, 'UTF-8')]
+[let _model : String = klass.name]
+class [_model.pluralize().toUpperFirst()/]Controller < ApplicationController
+  respond_to :html, :xml, :json
+	[let _plural : String = _model.pluralize().underscore()]
+  # GET /[_model.pluralize().underscore()/]
+  # GET /[_model.pluralize().underscore()/].json
+  def index
+    @[_plural /] = [_model /].all
+    respond_with(@[_model.underscore() /])
+  end
+
+  # GET /[_plural /]/1
+  # GET /[_plural /]/1.json
+  def show
+    @[_model.underscore() /] = [_model /].find(params[ '[' /]:id])
+	respond_with(@[_model.underscore() /])
+  end
+
+  # GET /[_plural /]/new
+  # GET /[_plural /]/new.json
+  def new
+    @[_model.underscore() /] = [_model /].new
+    respond_with(@[_model.underscore() /])
+  end
+
+  # GET /[_plural /]/1/edit
+  def edit
+    @[_model.underscore() /] = [_model /].find(params[ '[' /]:id])
+  end
+
+  # POST /[_plural /]
+  # POST /[_plural /].json
+  def create
+    @[_model.underscore() /] = [_model /].new(params[ '[' /]:[_model.underscore() /]])
+
+    respond_with(@[_model.underscore() /]) do |format|
+      if @[_model.underscore() /].save
+        format.html { redirect_to @[_model.underscore() /], notice: '[_model /] was successfully created.' }
+        format.json { render json: @[_model.underscore() /], status: :created, location: @[_model.underscore() /] }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @[_model.underscore() /].errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /[_plural /]/1
+  # PUT /[_plural /]/1.json
+  def update
+    @[_model.underscore() /] = [_model /].find(params[ '[' /]:id])
+
+    respond_with(@[_model.underscore() /]) do |format|
+      if @[_model.underscore() /].update_attributes(params[ '[' /]:[_model.underscore() /]])
+        format.html { redirect_to @[_model.underscore() /], notice: '[_model /] was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: "edit" }
+        format.json { render json: @[_model.underscore() /].errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /[_plural /]/1
+  # DELETE /[_plural /]/1.json
+  def destroy
+    @[_model.underscore() /] = [_model /].find(params[ '[' /]:id])
+    @[_model.underscore() /].destroy
+
+    respond_to do |format|
+      format.html { redirect_to [_model.underscore() /]_url }
+      format.json { head :no_content }
+    end
+  end
+end
+	[/let]
+[/let]
+	[/file]
+[/template] 

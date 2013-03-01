@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Acceleo RubyonrailsGenerator Module Runtime Plug-in
+Bundle-SymbolicName: rubyonrailsGenerator
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: rubyonrailsGenerator.Activator
+Bundle-Vendor: Eclipse Modeling Project
+require-bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.ocl,
+ org.eclipse.ocl.ecore,
+ org.eclipse.acceleo.common;bundle-version="3.2.2",
+ org.eclipse.acceleo.model;bundle-version="3.2.2",
+ org.eclipse.acceleo.profiler;bundle-version="3.2.2",
+ org.eclipse.acceleo.engine;bundle-version="3.2.2",
+ com.google.guava,
+ org.eclipse.uml2;bundle-version="3.2.0",
+ org.eclipse.uml2.uml;bundle-version="3.2.100"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Export-Package: rubyonrailsGenerator.main,
+ rubyonrailsGenerator.templates
+

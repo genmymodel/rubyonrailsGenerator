@@ -1,0 +1,265 @@
+[comment encoding = UTF-8 /]
+[module helpers('http://www.eclipse.org/uml2/3.0.0/UML')]
+
+[** 
+  	=================================================================			  
+  								HELPERS
+	=================================================================
+*/]
+
+
+
+[**
+ * Return true if an attribute is an Enumaration 
+ * @param Property	
+ */]
+[query public isEnum(property : Property) : Boolean 
+		= property.type.oclIsKindOf(Enumeration) /]
+
+
+[**
+ * Return true if an attribute is a Class (association member) 
+ * @param p	
+ */]
+[query public isClass(p : Property) : Boolean
+		= not p.association.name.oclIsUndefined() /]
+
+
+[**
+ * Return true if an attribute is a Class (association member) 
+ * @param p	
+ */]
+[query public isNeitherClassNorEnum(p : Property) : Boolean
+		= not p.isClass() and not p.isEnum() /]
+
+
+[**
+ * Return true if an attribute as a role in its association 
+ * @param klass	
+ */]
+[query public hasRole(p : Property) : Boolean
+		= p.name.toLower() <> p.class.name.toLower() /]
+
+
+[**
+ * Return true if a class has a super Class 
+ * @param klass	
+ */]
+[query public hasSuper(klass : Class) : Boolean
+		= not klass.general.name->isEmpty() /]
+
+
+
+[**
+ * Return the ruby class name from Rails naming conventions
+ * @param pe	UML Class or Enumerable
+ */]
+[query public classify(pe : PackageableElement) :  String
+		= pe.name	
+				.trim()
+				.toUpperFirst() /]
+
+
+
+[**
+ * Format the string given as parameter to fit naming conventions
+ * @param str	
+ */]
+[query public underscore(str : String) :  String
+		= str.toLowerFirst()
+			 .replaceAll('([A-Z])', '_$1')
+			 .toLower() /]
+
+
+[**
+ * Convert the string given as ruby symbol
+ * @param str	
+ */]
+[query public to_sym(str : String) :  String
+		= ':'.concat(str.underscore()) /]
+
+
+[**
+ * Return the right ruby filename for the class including the root path
+ * @param pe	UML Class or Enumerable
+ */]
+[query public getModelFilename(pe : PackageableElement) :  String
+		= 'app/models/' + 
+			pe.name
+				.underscore()
+				.concat('.rb')	/]
+
+
+[**
+ * Get the Second member of the given poperty within their association 
+ * @param p	
+ */]
+[query public oppositeOf(p : Property) : Property 
+	=  p.association.memberEnd->select(name <> p.name)->first() /]
+
+
+[**
+ * Return whether or not the association is a ONE-TO-ONE association 
+ * @param fst : To first member related to the Model where it is
+ * @param snd : To second member
+ *
+ * TODO: Check correctly the multplicity 0, 1, * 
+ * 		 Handle stuff with precise multiplicy 
+ */]
+[query public isOneToOne(fst : Property, snd : Property) : Boolean 
+	= fst.getUpper() =  1 and	snd.getUpper() = 1 /]
+
+
+[**
+ * Return whether or not the association is a ONE-TO-MANY association 
+ * @param fst : To first member related to the Model where it is
+ * @param snd : To second member	
+ */]
+[query public isOneToMany(fst : Property, snd : Property) : Boolean 
+	= fst.getUpper() = 1 and snd.getUpper().isIfinite() /]
+
+
+[**
+ * Return whether or not the association is a MANY-TO-ONE association 
+ * @param fst : To first member related to the Model where it is
+ * @param snd : To second member
+ */]
+[query public isManyToOne(fst : Property, snd : Property) : Boolean 
+	= fst.getUpper().isIfinite() and snd.getUpper() = 1 /]
+
+
+[**
+ * Return whether or not the association is a MANY-TO-MANY association 
+ * @param fst : To first member related to the Model where it is
+ * @param snd : To second member
+ */]
+[query public isManyToMany(fst : Property, snd : Property) : Boolean 
+	= fst.getUpper().isIfinite() and snd.getUpper().isIfinite() /]
+
+
+[**
+ * Return whether or not the mutiplicity is infinite 
+ * @param multiplicity 
+ */]
+[query public isIfinite(multiplicity : Integer) : Boolean 
+	= multiplicity = -1 /]
+
+
+[**
+ * Return the description text of a method (oeration) 
+ * @param op 
+ */]
+[query public getDesc(op : Operation) : Bag(String) 
+	= op.ownedComment._body /]
+
+
+[**
+ * Return the plural of the given word GROS FAKE 
+ * @param word	
+ */]
+[query public pluralize(s : String) : String =
+	invoke('org.jvnet.inflector.lang.en.NounPluralizer','pluralize(java.lang.String)', Sequence{s}) /]
+
+
+
+[**
+ * Return the right ruby filename for the class including the root path
+ * @param pe	UML Class or Enumerable
+ */]
+[query public getControllerFilename(klass : Class) :  String
+		= 'app/controllers/' + 
+			klass.name.pluralize()
+				.underscore()
+				.concat('_controller.rb')	/]
+
+
+
+[**
+ * Return the right ruby filename for the migration
+ * @param pe	UML Class or Enumerable
+ */]
+[query public getMigrationFilename(klass : Class) :  String
+		= 'db/migrate/' + 
+			klass.timestamp() + '_' +
+			klass.getMigrationName()
+				.underscore()
+				.concat('.rb')	/]
+
+[**
+ * Return the filename for the generated asset
+ * @param model
+ */]
+[query public getAssetFilename(model : Model) :  String
+		= 'app/assets/stylesheets/' + model.name.underscore().concat('.scss') /]
+
+[**
+ * Return the path for the directory containing views for the given 'klass'
+ * @param klass
+ */]
+[query public getViewsFilename(klass : Class) :  String
+		= 'app/views/' + klass.name.pluralize().underscore().concat('/') /]
+
+
+[**
+ * Return the path for the directory containing layouts for views 
+ * @param model
+ */]
+[query public getLayoutsFilename(model : Model) :  String
+		= 'app/views/layouts/application.html.erb' /]
+
+
+
+[**
+ * Return the path for the routes file
+ * @param model
+ */]
+[query public getRoutesFilename(model : Model) :  String
+		= 'config/routes.rb' /]
+
+
+[**
+ * Return the right ruby name for the migration
+ * @param Class	klass
+ */]
+[query public getMigrationName(klass : Class) :  String
+		= 'Create' + klass.name.toUpperFirst().pluralize() /]
+
+
+[**
+ * Return the right ruby name for the join migration
+ * @param Class	klass
+ */]
+[query public getJoinMigrationName(p : Property) :  String
+		= 'Create' + 
+			p.class.name.toUpperFirst() +
+			oppositeOf(p).class.name.toUpperFirst() +
+			'JoinTable' /]
+
+
+[**
+ * Return the right ruby name for the join migration between 'prop' and its opposite
+ * @param prop
+ */]
+[query public getJoinMigrationFilename(prop : Property) :  String
+		= 'db/migrate/' + 
+			prop.class.timestamp() + '_' +
+			prop.getJoinMigrationName()
+				.underscore()
+				.concat('.rb')	/]
+
+
+[query public timestamp(klass : Class) : String
+		= invoke('java.lang.System', 'currentTimeMillis().toString()', null) /]
+
+
+[**
+ * Return the root route of from a given model 
+ * @param model
+ */]
+[query public getRootRoute(model : Model) :  String
+		= let first : Class = model.packagedElement->filter(Class)->asSequence()->at(1) in
+		  if (first.oclIsUndefined()) then
+			''
+		  else 
+			'root :to => "' + first.name.pluralize().underscore() + '#index"'  
+		  endif /]
